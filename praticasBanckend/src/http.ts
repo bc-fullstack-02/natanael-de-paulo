@@ -44,4 +44,22 @@ app.post('/posts', (req, res) => {
   res.end()
 })
 
+// ALterando as informações 
+app.put('/posts/:id', (req, res) => {
+  const ret = db.find((e) => e.id === req.params.id)
+  if (ret) {
+    db = db.map((e) => {
+        if (e.id === req.params.id) {
+            return req.body
+        } else {
+            return e
+        }
+    })
+    res.status(202)
+    res.end()
+  } else {
+      res.status(404).end()
+  }
+})
+
 export { server }
