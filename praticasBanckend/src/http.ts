@@ -62,4 +62,17 @@ app.put('/posts/:id', (req, res) => {
   }
 })
 
+
+// Deleta uma informação através do id da requisição
+app.delete('/posts/:id', (req, res) => {
+  const ret = db.find((e) => e.id === req.params.id)
+  if(ret){
+    db = db.filter((e) => e.id !== req.params.id)
+    res.status(204)
+    res.end()
+  }
+  res.status(201)
+  res.send()
+})
+
 export { server }
