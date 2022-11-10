@@ -37,6 +37,17 @@ app.get('/posts', (req, res) => {
   res.send(db)
 })
 
+
+// Buscar informação por id da required
+app.get('/posts/:id', (req, res) => {
+  const ret = db.find((e) => e.id === req.params.id)
+  
+  if(ret) res.send(ret)
+  res.status(404).end()
+})
+
+
+
 // Criar uma nova informação
 app.post('/posts', (req, res) => {
   db.push(req.body);
