@@ -37,5 +37,11 @@ app.get('/posts', (req, res) => {
   res.send(db)
 })
 
+// Criar uma nova informação
+app.post('/posts', (req, res) => {
+  db.push(req.body);
+  res.status(201)
+  res.end()
+})
 
 export { server }
