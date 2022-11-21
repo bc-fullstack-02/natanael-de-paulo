@@ -13,7 +13,7 @@ export const Post = model('Post', new Schema({
 		validate: { // bonus track
 			validator: (val: string) => Redact
 				.count({ term: val })
-				.then((count: any)  => count === 0),
+				.then((count: number)  => count === 0),
 			message: 'nao pode usar a palavra {VALUE}'
 		}
 	},
