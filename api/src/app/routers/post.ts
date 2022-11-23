@@ -11,7 +11,7 @@ PostRoutes
 	.post( createPostController.handle );
 
 PostRoutes
-	.route('/posts/:_id')
+	.route('/posts/:id')
 	.get( new ShowPostController().handle );
 
 
