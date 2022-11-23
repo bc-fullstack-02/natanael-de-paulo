@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import { ShowPostService } from '../../services/post/ShowPostService';
 
-class NewPostController {
+class ShowPostController {
 	async handle(req: Request, res: Response){
 		const { _id } = req.params;
 		console.log('id',_id);
@@ -13,4 +13,4 @@ class NewPostController {
 	}
 }
 
-export { NewPostController };
+export { ShowPostController };
