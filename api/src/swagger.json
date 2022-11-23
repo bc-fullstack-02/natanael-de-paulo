@@ -17,6 +17,28 @@
   ],
   "paths": {
     "/posts": {
+      "get":{
+        "summary": "Listar posts",
+        "description": "Essa rota será responsavel por listar os posts",
+        "tags": ["Posts"],
+        "operationId":"listarPosts",
+        "responses": {
+          "200" : {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Post"
+                  
+                }
+                
+              }
+            }
+          }
+          
+        }
+      },
       "post": {
         "summary": "Criação de post",
         "description": "Essa rota será responsavel por criar um novo post",
