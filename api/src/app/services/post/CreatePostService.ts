@@ -7,17 +7,12 @@ interface Iprops{
 
 class CreatePostService {
 	async execute({ title, description } : Iprops ) { 
-		try {
-			const post = await Post.create({
-				title: title,
-				description: description
-			});
+		const post = await Post.create({
+			title: title,
+			description: description
+		});
 	
-			return post;
-		} catch (error) {
-			console.log(error);
-			return;
-		}
+		return post;
 	}
 }
 

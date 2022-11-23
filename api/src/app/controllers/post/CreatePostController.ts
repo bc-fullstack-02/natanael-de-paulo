@@ -7,16 +7,15 @@ class CreatePostController {
 			const { title, description } = req.body;
 			const createPostService  = new CreatePostService();
 			
-			if(!title) throw new Error('Title is required!');
-			if(!description) throw new Error('Description is required!');
+			if(!title) return res.status(400).json({ error: 'Title is required!'});
+			
+			if(!description) return res.status(400).json({ error: 'Description is required!'});
 			
 			const newPost = await createPostService.execute( { title, description } );
-			res.json(newPost);
-			res.redirect(`v1/posts/new/:${newPost?._id}`);
+			return res.json(newPost);
 		} catch (error) {
 			console.log(error);
 			res.status(500);
-			return res.end();
 		}
 	}
 }
