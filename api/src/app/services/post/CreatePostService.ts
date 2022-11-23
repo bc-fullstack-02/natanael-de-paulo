@@ -6,12 +6,12 @@ interface Iprops{
 }
 
 class CreatePostService {
-	async execute({ title, description } : Iprops ) { 
+	async execute({title, description} : Iprops ) { 
 		const post = await Post.create({
 			title: title,
 			description: description
 		});
-	
+
 		return post;
 	}
 }

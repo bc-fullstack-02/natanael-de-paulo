@@ -4,7 +4,6 @@ class ListPostService {
 	async execute() {
 		const postList = await Post.find();
 
-		console.log(postList);
 		return postList;
 	}
 }

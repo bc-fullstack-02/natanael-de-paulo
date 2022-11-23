@@ -3,21 +3,16 @@ import { CreatePostService } from '../../services/post/CreatePostService';
 
 class CreatePostController {
 	async handle(req: Request, res: Response){
-		try {
-			const { title, description } = req.body;
-			const createPostService  = new CreatePostService();
-			
-			if(!title) return res.status(400).json({ error: 'Title is required!'});
-			
-			if(!description) return res.status(400).json({ error: 'Description is required!'});
-			
-			const newPost = await createPostService.execute( { title, description } );
-			return res.json(newPost);
-		} catch (error) {
-			console.log(error);
-			res.status(500);
-		}
+		const { title, description } = req.body;
+		const createPostService  = new CreatePostService();
+
+		if(!title) return res.status(400).json({ error: 'Title is required!'});
+		if(!description) return res.status(400).json({ error: 'Description is required!'});
+		
+		const newPost = await createPostService.execute({title, description});
+		
+		res.status(201).json(newPost);
 	}
 }
 
-export const createPostController = new CreatePostController(); 
+export const createPostController = new CreatePostController();
