@@ -1,7 +1,5 @@
-import { model, Schema, Types } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { Redact } from './Redact';
-
-
 
 export const Post = model('Post', new Schema({
 	title: {

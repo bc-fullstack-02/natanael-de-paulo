@@ -1,4 +1,4 @@
-import { model, Schema} from 'mongoose';
+import {model, Schema} from 'mongoose';
 
 export const Comment = model('Comment', new Schema({
 	description: {
