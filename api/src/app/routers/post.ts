@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { createPostController } from '../controllers/post/CreatePostController';
+import { deletePostController } from '../controllers/post/DeletePostController';
 import { listPostController } from '../controllers/post/ListPostController';
-import { ShowPostController } from '../controllers/post/ShowPostController';
+import { listPostByIdController } from '../controllers/post/ListPostByIdController';
 
 export const PostRoutes = Router();
 
@@ -12,14 +13,14 @@ PostRoutes
 
 PostRoutes
 	.route('/posts/:id')
-	.get( new ShowPostController().handle );
+	.get( listPostByIdController.handle )
+	.delete(deletePostController.handle);
 
 
 // PostRoutes
 // 	.route('/posts/:id')
-// 	.get(PostController.show)
 // 	.put(PostController.save)
-// 	.delete(PostController.delete);
+// 	
 
 // PostRoutes
 // 	.route('/posts/:id/edit')
