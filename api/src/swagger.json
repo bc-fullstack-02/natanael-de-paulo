@@ -1,0 +1,77 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API para uma rede social",
+    "description": "Essa API tem como objetivo a manipulação de eventos de uma rede social",
+    "termsOfService": "http://localhost:3001/terms",
+    "contact": {
+      "email": "natanaeldepaulo123@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/v1",
+      "description": "API de teste"
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "post": {
+        "summary": "Criação de post",
+        "description": "Essa rota será responsavel por criar um novo post",
+        "tags": ["Posts"],
+        "operationId": "criarNovoPost",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              },
+              "examples": {
+                "post":{
+                  "summary": "exemplo de post",
+                  "value": {
+                    "title": "TestPostSwaggerTitle",
+                    "description": "TestPostSwaggerDescription"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201" : {
+            "description": "post criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Post"
+                  
+                }
+                
+              }
+            }
+          }
+          
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Post":{
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
