@@ -1,11 +1,12 @@
 import { Router } from 'express';
+import { listCommentController } from '../controllers/comment/ListCommentController';
 
 export const CommentRouters = Router();
 
-// CommentRouters
-// 	.route('/:postId/comments')
-// 	.get()
-// 	.post();
+CommentRouters
+	.route('/:postId/comments')
+	.get( listCommentController.handle )
+	.post();
 // CommentRouters
 // 	.route('/:postId/comments/new')
 // 	.get();
