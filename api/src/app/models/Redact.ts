@@ -1,6 +1,10 @@
 import { model, Schema } from 'mongoose';
 
-export const Redact = model('Redact', new Schema({
+interface IRedact {
+	term: string;
+} 
+
+export const Redact = model<IRedact>('Redact', new Schema<IRedact>({
 	term: {
 		type: String,
 		required: true,

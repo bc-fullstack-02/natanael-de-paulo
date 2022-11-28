@@ -1,6 +1,11 @@
-import {model, Schema} from 'mongoose';
+import {model, Schema, Types} from 'mongoose';
 
-export const Comment = model('Comment', new Schema({
+interface IComment {
+	description: string;
+	post: Types.ObjectId;
+} 
+
+export const Comment = model<IComment>('Comment', new Schema<IComment>({
 	description: {
 		type: String,
 		required: true,

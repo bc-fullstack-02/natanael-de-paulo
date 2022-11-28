@@ -1,7 +1,13 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types} from 'mongoose';
 import { Redact } from './Redact';
 
-export const Post = model('Post', new Schema({
+interface IPost {
+	title: string;
+	description: string;
+	comments: Types.ObjectId;
+} 
+
+export const Post = model<IPost>('Post', new Schema<IPost>({
 	title: {
 		type: String,
 		required: [true, 'titulo obrigatorio'],
