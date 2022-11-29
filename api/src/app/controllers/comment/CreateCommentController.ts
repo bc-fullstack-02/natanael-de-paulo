@@ -7,8 +7,8 @@ class CreateCommentController {
 		const { description } = req.body;
 		const createCommentService  = new CreateCommentService();
 
-		// if(!title) return res.status(400).json({ error: 'Title is required!'});
-		// if(!description) return res.status(400).json({ error: 'Description is required!'});
+	
+		if(!description) return res.status(400).json({ error: 'Description is required!'});
 		
 		const newComment = await createCommentService.execute({postId, description}); 
 		res.status(201).json(newComment);

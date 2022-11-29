@@ -9,7 +9,7 @@ interface Iprops{
 class CreateCommentService {
 	async execute( { postId, description } : Iprops ) { 
 		
-		const getcomments = await Comment.find({post: postId});
+		const getComments = await Comment.find({post: postId});
 
 		const newComment = await Comment.create({
 			description,
@@ -17,7 +17,7 @@ class CreateCommentService {
 		});
 
 		await Post.findByIdAndUpdate(postId, {
-			comments: [...getcomments, newComment]
+			comments: [...getComments, newComment]
 		});
 		
 		
