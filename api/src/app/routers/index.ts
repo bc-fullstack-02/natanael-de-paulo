@@ -5,4 +5,4 @@ import { PostRoutes } from './Post';
 export const routes = Router();
 
 routes.use('/v1', PostRoutes);
-routes.use('/v1/', CommentRouters);
+routes.use('/v1', CommentRouters);

@@ -4,7 +4,7 @@ import { Redact } from './Redact';
 interface IPost {
 	title: string;
 	description: string;
-	comments: Types.ObjectId;
+	comments: [Types.ObjectId];
 } 
 
 export const Post = model<IPost>('Post', new Schema<IPost>({
