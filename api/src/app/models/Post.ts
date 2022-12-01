@@ -4,6 +4,7 @@ import { Redact } from './Redact';
 interface IPost {
 	title: string;
 	description: string;
+	user: Types.ObjectId
 	comments: [Types.ObjectId];
 } 
 
@@ -22,6 +23,10 @@ export const Post = model<IPost>('Post', new Schema<IPost>({
 				.then((count: number)  => count === 0),
 			message: 'nao pode usar a palavra {VALUE}'
 		}
+	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
 	},
 	comments: [{
 		type: Schema.Types.ObjectId,
