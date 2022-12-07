@@ -1,30 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors')
-
 module.exports = {
-  content: ['./src/**/*.{html,js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: colors.black,
-      white: colors.white,
-      gray: colors.gray,
-      red: colors.red,
-      emerald: colors.emerald,
-      indigo: colors.indigo,
-      yellow: colors.yellow,
-      blue: colors.blue,
-      sky: colors.sky,
-      AzureRadiant: {
-        100: '#00aeff'
-      },
-      CuriousBlue: {
-        100: '#3ea1db'
-      }
+    fontFamily: {
+      sans: ['Inter', 'sans-serif']
     },
-    extend: {}
+    extend: {
+      animation: {
+        rotate: 'rotate 3s ease-in-out 1'
+      },
+      keyframes: {
+        rotate: {
+          '0%': { transform: 'rotateY(0)' },
+          '100%': { transform: 'rotateY(360deg)' }
+        }
+      }
+    }
   },
   plugins: []
 }

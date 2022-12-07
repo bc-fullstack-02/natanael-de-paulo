@@ -1,6 +1,6 @@
 module.exports = {
-  content: ['./src/**/*.{html,js, jsx, tsx}'],
   plugins: {
+    'postcss-import': {},
     tailwindcss: {},
     autoprefixer: {}
   }

@@ -1,12 +1,8 @@
+import React from 'react';
+import { Login } from './pages/login';
 
-import './index.css'
-function App()  {
-
-  return (
-    <div className="bg-red-500 h-screen w-full">
-      asdasd
-    </div>
-  )
+export function App() {
+	return (
+		<Login />
+	);
 }
-
-export default App
