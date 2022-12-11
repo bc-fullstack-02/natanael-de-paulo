@@ -8,7 +8,7 @@ module.exports = {
     },
     extend: {
       animation: {
-        rotate: 'rotate 3s ease-in-out 1'
+        rotate: 'rotate 4s ease-in-out 1'
       },
       keyframes: {
         rotate: {
