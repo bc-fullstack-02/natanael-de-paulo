@@ -1,7 +1,10 @@
 import { Router } from 'express';
-import { createUserController } from '../controllers/user/CreateUserController';
+import { detailUserController } from '../controllers/user/DetailUserController';
+import { listUsers } from '../controllers/user/ListUsers';
+import { isAuthenticated } from '../shared/middlewares/isAuthenticated';
 
 export const UserRoutes = Router();
 
 UserRoutes
-	.post('/users', createUserController.handle );
+	.get('/', listUsers.handle)
+	.get('/me', isAuthenticated, detailUserController.handle);

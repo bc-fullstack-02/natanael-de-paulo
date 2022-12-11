@@ -8,12 +8,17 @@ import { updatePostController } from '../controllers/post/UpdatePostController';
 export const PostRoutes = Router();
 
 PostRoutes
-	.route('/posts')
+	.route('/')
 	.get( listPostController.handle )
 	.post( createPostController.handle );
 
 PostRoutes
-	.route('/posts/:id')
-	.get( listPostByIdController.handle )
-	.delete( deletePostController.handle )
-	.put( updatePostController.handle );
+	.route('/:id')
+	.get(listPostByIdController.handle )
+	.delete(deletePostController.handle )
+	.put(updatePostController.handle );
+
+
+
+//{id}/like
+//Criar rota para dar like em um determinado post
