@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+mongoose.set('strictQuery', true);
+
 export const ConnectDb = mongoose.connect(
 	`${process.env.MONGO_URL || 'mongodb://localhost:27017/mydb'}_${
 		process.env.NODE_ENV || 'development'

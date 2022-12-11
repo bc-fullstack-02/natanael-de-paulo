@@ -1,5 +1,4 @@
 import { Comment } from '../../models/Comment';
-import {  Post } from '../../models/Post';
 
 interface Iprops{
   postId: string;

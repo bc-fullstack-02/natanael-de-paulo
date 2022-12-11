@@ -4,6 +4,8 @@ import { ListPostService } from '../../services/post/ListPostService';
 class ListPostController {
 	async handle(req: Request, res: Response){
 		const listPostService = new ListPostService();
+
+		console.log('AQUI');
 		
 		const postList = await listPostService.execute();
 		
