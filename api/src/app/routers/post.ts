@@ -13,7 +13,7 @@ PostRoutes
 	.post( createPostController.handle );
 
 PostRoutes
-	.route('/:id')
+	.route('/:post_id')
 	.get(listPostByIdController.handle )
 	.delete(deletePostController.handle )
 	.put(updatePostController.handle );

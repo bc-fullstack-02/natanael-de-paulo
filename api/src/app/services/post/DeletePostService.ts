@@ -1,11 +1,16 @@
 import { Comment } from '../../models/Comment';
 import { Post } from '../../models/Post';
 
-class DeletePostService{
-	async execute(id : string) { 
+interface Iprops{
+	user_id: string;
+	post_id: string;
+}
 
-		await Comment.find({post: id}).deleteMany();
-		const postById = await Post.findByIdAndDelete(id);
+class DeletePostService{
+	async execute({ user_id, post_id } : Iprops) { 
+
+		await Comment.find({post: post_id}).deleteMany().where('user').equals(user_id);
+		const postById = Post.findByIdAndDelete(post_id).where('user').equals(user_id);
 
 		return postById;
 	}

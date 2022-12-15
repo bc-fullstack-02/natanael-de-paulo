@@ -3,11 +3,10 @@ import { ListPostService } from '../../services/post/ListPostService';
 
 class ListPostController {
 	async handle(req: Request, res: Response){
+		const user_id = req.user_id;
 		const listPostService = new ListPostService();
-
-		console.log('AQUI');
 		
-		const postList = await listPostService.execute();
+		const postList = await listPostService.execute(user_id);
 		
 		res.json(postList);
 	}

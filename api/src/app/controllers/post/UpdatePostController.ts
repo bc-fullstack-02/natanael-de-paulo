@@ -3,11 +3,12 @@ import { UpdatePostService } from '../../services/post/UpdatePostService';
 
 class UpdatePostController {
 	async handle(req: Request, res: Response){
-		const { id } = req.params;
+		const user_id = req.user_id;
+		const { post_id } = req.params;
 		const { title, description } = req.body;
-		
+
 		const updatePostService = new UpdatePostService();
-		const post = await updatePostService.execute( { id, title, description } );
+		const post = await updatePostService.execute( { user_id, post_id, title, description } );
 		
 		res.json(post);
 	}

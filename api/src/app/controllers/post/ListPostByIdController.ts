@@ -3,10 +3,10 @@ import { ListPostByIdService } from '../../services/post/ListPostByIdService';
 
 class ListPostByIdController {
 	async handle(req: Request, res: Response){
-		const { id } = req.params;
+		const { post_id } = req.params;
 		
 		const listPostByIdService = new ListPostByIdService();
-		const post = await listPostByIdService.execute( id );
+		const post = await listPostByIdService.execute( post_id );
 		
 		res.json(post);
 	}

@@ -3,10 +3,11 @@ import { DeletePostService } from '../../services/post/DeletePostService';
 
 class DeletePostController {
 	async handle(req: Request, res: Response){
-		const { id } = req.params;
+		const user_id = req.user_id;
+		const { post_id } = req.params;
 		
 		const deletePostService = new DeletePostService();
-		const post = await deletePostService.execute( id );
+		const post = await deletePostService.execute({user_id, post_id});
 
 		res.json(post);
 	}
