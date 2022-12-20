@@ -1,4 +1,7 @@
+import { Types } from 'mongoose';
 import { Post } from '../../models/Post';
+import { Profile } from '../../models/Profile';
+import { User } from '../../models/User';
 interface Iprops{
   title: string;
   description: string;
@@ -6,10 +9,10 @@ interface Iprops{
 }
 
 class CreatePostService {
-	async execute( { title, description, user_id } : Iprops ) {
-		
+	async execute({ title, description, user_id }: Iprops) {
+		const profile = await Profile.findOne().where('user').equals(user_id);		
 		const post = await Post.create({
-			profile: user_id,
+			profile: profile?._id,
 			title: title,
 			description: description
 		});
