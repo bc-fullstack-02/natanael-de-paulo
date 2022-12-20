@@ -4,6 +4,8 @@ interface IComment {
 	description: string;
 	user: Types.ObjectId
 	post: Types.ObjectId;
+	profile: Types.ObjectId;
+	likes: [Types.ObjectId];
 } 
 
 export const Comment = model<IComment>('Comment', new Schema<IComment>({
@@ -20,5 +22,14 @@ export const Comment = model<IComment>('Comment', new Schema<IComment>({
 	post: {
 		type: Schema.Types.ObjectId,
 		ref: 'Post'
-	}
+	},
+	profile: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: 'Profile'
+	},
+	likes: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Profile'
+	}]
 }));

@@ -1,11 +1,17 @@
 FROM node:16-alpine as base
 WORKDIR /src
-COPY package*.json ./
+# COPY package*.json ./
+
+COPY . .
+RUN npm cache clean rm -rf node_modules
 
 FROM base as dev
 
 ENV NODE_ENV=development
 
-RUN npm install
-COPY ./* ./
-CMD ["npm", "start"]
+# RUN npm cache clean --force && npm install
+# RUN npm install
+
+# ENTRYPOINT ["npm", "start"]
+
+EXPOSE 4000

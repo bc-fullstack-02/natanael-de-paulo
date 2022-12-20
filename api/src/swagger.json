@@ -36,7 +36,6 @@
               }
             }
           }
-          
         }
       },
       "post": {
@@ -78,6 +77,47 @@
           }
           
         }
+      }
+    },
+    "/posts/{id}" : {
+      "get": {
+        "summary":"Listar post pelo id",
+        "description" : "Buscar post pelo id",
+        "tags":["Posts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary":"Deletar post pelo id",
+        "description" : "Deletar post pelo id",
+        "tags":["Posts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          }
+        ]
       }
     }
   },

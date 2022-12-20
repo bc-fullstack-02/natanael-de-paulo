@@ -1,25 +1,33 @@
 import { Request, Response } from 'express';
-import { CreateUserService } from '../../services/user/CreateUserService';
+import { User } from '../../models/User';
+import { CreateUserService } from '../../services/security/CreateUserService';
 import { BadRequestException } from '../../shared/errors/BadRequestException';
 
 
+interface IUserProps{
+	name: string;
+	user: string;
+	password: string;
+}
+
 class CreateUserController {
 	async handle(req: Request, res: Response) {
-		const { name, user, password } = req.body;
+		const userData  = req.body as IUserProps;
 
-		if (!name) throw new BadRequestException ('Name is required!');
-		if (!user) throw new BadRequestException('Email is required!');
-		if (!password) throw new BadRequestException('Password is required!');
+		if (!userData.user) throw new BadRequestException('User is required!');
+		if (!userData.password) throw new BadRequestException ('Password is required!');
+
+		const userAlreadyExists = await User.findOne({ user: userData.user});
+
+		if (userAlreadyExists) throw new BadRequestException('User already exists!');
 
 		const createUserService = new CreateUserService();
+		
+		const newUser = await createUserService.execute(
+			userData 
+		);
 
-		const userInfo = await createUserService.execute({
-			name,
-			user,
-			password
-		});
-
-		return res.json(userInfo);
+		return res.json(newUser);
 	}
 }
 

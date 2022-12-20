@@ -1,18 +1,12 @@
 import { model, Schema, Types } from 'mongoose';
 
 interface IUser{
-  name: string;
   user: string;
   password: string;
-  following: [Types.ObjectId]
+  profile: Types.ObjectId
 }
 
 export const User = model<IUser>('User', new Schema<IUser>({
-	name: {
-		type: String,
-		required: true,
-		minlength: 2
-	},
 	user: {
 		type: String,
 		unique: true,
@@ -24,8 +18,8 @@ export const User = model<IUser>('User', new Schema<IUser>({
 		required: true,
 		minlength: 2  
 	},
-	following: [{
+	profile: {
 		type: Schema.Types.ObjectId,
-		ref: 'User'
-	}]
+		ref: 'Profile'
+	}
 }));

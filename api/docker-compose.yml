@@ -1,5 +1,20 @@
 version: '3.8'
 services:
+  minio:
+    image: bitnami/minio
+    ports:
+      - '127.0.0.1:9001:9001'
+      - '127.0.0.1:9000:9000'
+
+    environment:
+      MINIO_ROOT_USER: ROOTUSER
+      MINIO_ROOT_PASSWORD: ROOTPASSWORD123
+      MINIO_SERVER_HOST: localhost
+      MINIO_SCHEME: http
+      MINIO_API_CORS_ALLOW_ORIGIN: "*"
+    networks:
+    - mynet  
+
   mongodb:
     image: mongo:latest
     container_name: 'mongodb'
@@ -8,7 +23,18 @@ services:
     networks:
       - mynet
 
-  backend:    
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - mynet
+
+  backend:
+      image: natanael/repository:1.0
       restart: always
       build:
         context: ./
@@ -16,14 +42,17 @@ services:
         - .:/src
       depends_on:
         - mongodb
+        - rabbitmq
+        - minio
       environment:
-        PORT: 3002
+        PORT: 4000
         MONGO_URL: mongodb://mongodb:27017/mydb
-        ACCESS_TOKEN_SECRET: tokenjwtlalalal
+        JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
       ports:
-          - 3002:3002
+          - "4000:4000"
       networks:
         - mynet
+      command: sh -c "npm run start"
 
 networks:
   mynet:

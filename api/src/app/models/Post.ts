@@ -4,32 +4,37 @@ import { Redact } from './Redact';
 interface IPost {
 	title: string;
 	description: string;
-	user: Types.ObjectId
+	profile: Types.ObjectId
 	comments: [Types.ObjectId];
+	likes: [Types.ObjectId];
 } 
 
 export const Post = model<IPost>('Post', new Schema<IPost>({
 	title: {
 		type: String,
-		required: [true, 'titulo obrigatorio'],
-		minLength: [2, 'titulo no minimo 2']
+		required: true,
+		minLength: [2, 'Titulo no minimo 2']
 	},
 	description: {
 		type: String,
-		required: [true, 'descricao obrigatoria'],
-		validate: { // bonus track
-			validator: (val: string) => Redact
-				.count({ term: val })
-				.then((count: number)  => count === 0),
-			message: 'nao pode usar a palavra {VALUE}'
-		}
+		required: true,
+		// validate: {
+		// 	validator: (val: string) => Redact
+		// 		.count({ term: val })
+		// 		.then((count: number)  => count === 0),
+		// 	message: 'nao pode usar a palavra {VALUE}'
+		// }
 	},
-	user: {
+	profile: {
 		type: Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'Profile'
 	},
 	comments: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Comment'
+	}],
+	likes: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Profile'
 	}]
 },{ timestamps: true }));

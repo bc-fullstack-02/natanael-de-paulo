@@ -3,14 +3,14 @@ import { CreateCommentService } from '../../services/comment/CreateCommentServic
 
 class CreateCommentController {
 	async handle(req: Request, res: Response){
-		const { postId, } = req.params;
-		const { description, user_id } = req.body;
+		const user_id = req.user_id;
+		const { post_id } = req.params;
+		const { description } = req.body;
 		const createCommentService  = new CreateCommentService();
 
-	
 		if(!description) return res.status(400).json({ error: 'Description is required!'});
 		
-		const newComment = await createCommentService.execute({postId, description, user_id}); 
+		const newComment = await createCommentService.execute({user_id, post_id, description}); 
 		res.status(201).json(newComment);
 	}
 }

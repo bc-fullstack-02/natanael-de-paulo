@@ -9,11 +9,11 @@ import { isAuthenticated } from '../shared/middlewares/isAuthenticated';
 export const CommentRouters = Router();
 
 CommentRouters
-	.route('/:postId/comments')
+	.route('/:post_id/comments')
 	.get( listCommentController.handle )
 	.post( isAuthenticated, createCommentController.handle );
 CommentRouters
-	.route('/:postId/comments/:id')
+	.route('/:post_id/comments/:id')
 	.get( listCommentByIdController.handle )
 	.put( isAuthenticated, updateCommentController.handle )
 	.delete(isAuthenticated, deleteCommentController.handle );
