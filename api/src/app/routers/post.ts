@@ -4,8 +4,7 @@ import { deletePostController } from '../controllers/post/DeletePostController';
 import { listPostController } from '../controllers/post/ListPostController';
 import { listPostByIdController } from '../controllers/post/ListPostByIdController';
 import { updatePostController } from '../controllers/post/UpdatePostController';
-import { likePostController } from '../controllers/post/LikePostController';
-import { unlikePostController } from '../controllers/post/UnlikePostController';
+import { likeAndUnlikePostController} from '../controllers/post/LikeAndUnlikePostController';
 
 export const PostRoutes = Router();
 
@@ -20,15 +19,9 @@ PostRoutes
 	.delete(deletePostController.handle)
 	.put(updatePostController.handle);
 
-
 PostRoutes
 	.route('/:post_id/like')
-	.post(likePostController.handle);
+	.post(likeAndUnlikePostController.handle);
 	
-PostRoutes
-	.route('/:post_id/unlike')
-	.post(unlikePostController.handle);
-
-
 //{id}/like
 //Criar rota para dar like em um determinado post

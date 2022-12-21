@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-import { Profile } from '../../models/Profile';
 import { ListPostService } from '../../services/post/ListPostService';
 
 class ListPostController {
