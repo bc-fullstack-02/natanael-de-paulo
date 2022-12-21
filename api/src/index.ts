@@ -9,7 +9,7 @@ const io = new Server(server ,{
 	}
 });
 
-const port = 3001;
+const port = 3002;
 
 io.on('connection', (socket) => console.log('socket', socket.id));
 
