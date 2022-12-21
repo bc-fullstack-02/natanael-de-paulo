@@ -2,16 +2,16 @@ import { Comment } from '../../models/Comment';
 import {  Post } from '../../models/Post';
 
 interface Iprops{
-  postId: string;
-  id: string;
+  post_id: string;
+  comment_id: string;
 }
 
 class DeleteCommentService {
-	async execute( { postId, id } : Iprops ) { 
-		const commentToDelete = await Comment.find({post: postId}).deleteOne().where('_id').equals(id);    
-		const getComments = await Comment.find({post: postId});
+	async execute( { post_id, comment_id } : Iprops ) { 
+		const commentToDelete = await Comment.deleteOne({post: post_id}).where('_id').equals(comment_id);    
+		const getComments = await Comment.find({post: post_id});
 
-		await Post.findByIdAndUpdate(postId, {
+		await Post.findByIdAndUpdate(post_id, {
 			comments: [...getComments]
 		});
 		

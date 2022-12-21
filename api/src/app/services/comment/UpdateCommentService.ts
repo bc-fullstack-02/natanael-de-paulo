@@ -2,26 +2,25 @@ import { Comment } from '../../models/Comment';
 import {  Post } from '../../models/Post';
 
 interface Iprops{
-  postId: string;
-  id: string;
+  post_id: string;
+  comment_id: string;
   description: string;
 }
 
 class UpdateCommentService {
-	async execute( { postId, id, description } : Iprops ) { 
+	async execute( { post_id, comment_id, description } : Iprops ) { 
     
-		const commentToUpdate = await Comment.find({post: postId}).updateOne({
+		await Comment.findByIdAndUpdate(comment_id, {
 			description: description
-		}).where('_id').equals(id);    
+		});
 
-
-		const getComments = await Comment.find({post: postId});
-
-		await Post.findByIdAndUpdate(postId, {
+		const getComments = await Comment.find({ post: post_id });
+		
+		await Post.findByIdAndUpdate(post_id, {
 			comments: [...getComments]
 		});
 		
-		return commentToUpdate;
+		return 'Comentario atualizado';
 	}
 }
 

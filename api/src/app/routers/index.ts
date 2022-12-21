@@ -8,7 +8,7 @@ import { UserRoutes } from './User';
 
 export const routes = Router();
 
-PostRoutes.use('/', isAuthenticated, CommentRouters);
+PostRoutes.use('/', CommentRouters);
 routes.use('/posts', isAuthenticated, PostRoutes);
 routes.use('/users',isAuthenticated, UserRoutes);
 routes.use('/profiles', isAuthenticated, ProfileRoutes);

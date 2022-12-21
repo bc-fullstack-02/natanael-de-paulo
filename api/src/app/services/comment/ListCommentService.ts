@@ -1,9 +1,9 @@
 import { Comment } from '../../models/Comment';
 
 class ListCommentService {
-	async execute( postId : string ) {
+	async execute( post_id : string ) {
     
-		const comments = await Comment.find( { post: postId } );
+		const comments = await Comment.find( { post: post_id } );
 
 		return comments;
 	}
