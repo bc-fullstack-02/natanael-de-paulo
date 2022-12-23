@@ -10,7 +10,9 @@ FROM base as dev
 ENV NODE_ENV=development
 
 # RUN npm cache clean --force && npm install
-# RUN npm install
+RUN npm install
+RUN npm uninstall bcrypt 
+RUN npm install bcrypt
 
 # ENTRYPOINT ["npm", "start"]
 

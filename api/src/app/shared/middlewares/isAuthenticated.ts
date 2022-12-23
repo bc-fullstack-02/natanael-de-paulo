@@ -26,7 +26,7 @@ export const isAuthenticated = (
 		return next();
 	} catch (err) {
 		return res.status(401).json({
-			error: 'User not authenticated2.'
+			error: 'Failed authenticated.'
 		}).end();
 	}
 };

@@ -32,6 +32,9 @@ services:
       - 15672:15672
     networks:
       - mynet
+    environment:
+    - RABBITMQ_DEFAULT_USER=admin
+    - RABBITMQ_DEFAULT_PASS=admin
 
   backend:
       image: natanael/repository:1.0
@@ -52,7 +55,7 @@ services:
           - "4000:4000"
       networks:
         - mynet
-      command: sh -c "npm run start"
+      # command: sh -c "npm run dev"
 
 networks:
   mynet:
