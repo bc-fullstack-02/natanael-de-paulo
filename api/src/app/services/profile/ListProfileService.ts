@@ -1,8 +1,8 @@
 import { Profile } from '../../models/Profile';
 
 class ListProfileService {
-	async execute() {
-		const profileData = await Profile.find({});
+	async execute(user_id: string) {
+		const profileData = await Profile.find({}).where('user').ne(user_id);
 		return profileData;
 	}
 }
