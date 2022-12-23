@@ -1,8 +1,11 @@
 import React from 'react';
-import { Login } from './pages/login';
+import { BrowserRouter } from 'react-router-dom'
+import { Routes } from './router';
 
 export function App() {
 	return (
-		<Login />
+		<BrowserRouter>
+			<Routes/>
+		</BrowserRouter>
 	);
 }

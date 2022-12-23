@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api';
 
-import { Form } from '../../components/Form';
-import { WraperInput } from '../../components/Form/WraperInput';
-import { Text } from '../../components/Text';
-import { Input } from '../../components/Form/Input';
 import { MdLockOutline, MdPersonOutline } from 'react-icons/md';
+import { AuthForm } from '../../components/AuthForm';
+import { WraperInput } from '../../components/AuthForm/WraperInput';
+import { Input } from '../../components/AuthForm/Input';
+import { Text } from '../../components/Text';
 
 export function SignUp() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export function SignUp() {
   }
 
 	return(
-		<Form 
+		<AuthForm 
       formTitle='Faça o cadastro e começe a usar!' 
       submitFormButtonText='Cadastrar' 
       linkDescription={['Já possui conta?', 'Entre agora!']} 
@@ -56,6 +56,6 @@ export function SignUp() {
           <Input type="text" placeholder="Digite sua senha" id='password'/>
         </WraperInput>
       </label>
-    </Form>
+    </AuthForm>
 	);
 }

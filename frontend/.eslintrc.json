@@ -17,6 +17,7 @@
     },
     "plugins": [
         "react",
+        "tailwindcss",
         "@typescript-eslint"
     ],
     "rules": {

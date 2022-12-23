@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 export interface HeadingProps {
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
-  asChild: boolean;
+  asChild?: boolean;
   className?: string;
 }
 
