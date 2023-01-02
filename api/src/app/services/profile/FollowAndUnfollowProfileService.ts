@@ -1,5 +1,4 @@
 import { Types } from 'mongoose';
-import { Post } from '../../models/Post';
 import { Profile } from '../../models/Profile';
 import { User } from '../../models/User';
 

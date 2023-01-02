@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "mongo:start": "docker run -d -p 27017:27017 mongo:latest",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "start": "nodemon src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

@@ -1,28 +1,85 @@
 import { app } from './app';
-import { Server }  from 'socket.io';
+import { Server } from 'socket.io';
 import { createServer } from 'http';
+import { sub } from './app/shared/middlewares/pubsub';
+import jwt from 'jsonwebtoken';
+import { Profile } from './app/models/Profile';
+import { SubscriptionSession } from 'rascal';
+import { User } from './app/models/User';
+const httpServer = createServer(app);
 
-const httpServer  = createServer(app);
-
-const io = new Server(httpServer , {
+const io = new Server(httpServer, {
 	cors: {
 		origin: '*'
 	}
 });
 
-const port = 3002;
+const liveData = io.of('/v1');
 
-io.on('connection', (socket) => console.log('socket', socket.id));
+liveData.use((socket, next) => {
+	alert('asdasdasd');
 
-httpServer .listen(process.env.PORT || port, () => {
-	console.log(`🚀 Server is running on http://localhost:${process.env.PORT || port}`);
+	if (socket.handshake.auth && socket.handshake.auth.token) {
+		jwt.verify(socket.handshake.auth.token, String(process.env.JWT_SECRET), (err:any, user: any) => {
+			if(err) return next(new Error('Authentication error'));
+			User.findOne(user)
+				.populate('profile')
+				.then(u => {
+					if(u) {
+						(socket as any).profile = u.profile;
+						console.log('socketodata', u.profile);
+						next();
+					} else {
+						next(new Error('Authentication error'));
+					}
+				});
+		});
+	} else {
+		next(new Error('Authentication error'));
+	}
+});
+
+liveData.on('connection', (socket) => {
+
+	console.log('socketodata', (socket as any).profile.name);
+	
+	socket.on('disconnect', () => {
+		console.log(socket.connected);
+	});
+	socket.on('error', (err) => {
+		console.error(err);
+	});
+	socket.emit('connect_profile', (socket as any).profile);
+});
+
+
+
+sub()
+	.then((sub) => {
+		sub.on('message', (message, content, ackOrNack) => {
+			ackOrNack();
+			Object.entries(Object.fromEntries(liveData.sockets))
+				.filter(([, v]) =>
+					content.keys.includes((v as any).profile._id.toString())
+				)
+				.map(([k, v]) => {
+					return v.emit(content.type, content.payload);
+				});
+		}) as SubscriptionSession;
+	}) 
+	.catch(console.error);
+
+
+const port = 3001;
+
+httpServer.listen(process.env.PORT || port, () => {
+	console.log(
+		`🚀 Server is running on http://localhost:${process.env.PORT || port}`
+	);
 	console.log('ENV VARIABLES:');
 	console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 	console.log(`PORT: ${process.env.PORT}`);
 	console.log(`MONGO_URL: ${process.env.MONGO_URL}`);
 });
-
-
-
 
 

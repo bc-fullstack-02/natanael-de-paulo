@@ -4,13 +4,13 @@ import { FollowAndUnfollowProfileService } from '../../services/profile/FollowAn
 
 class FollowAndUnfollowProfileController {
 	async handle(req: Request, res: Response){
-		const { profile_id } = req.params;
 		const user_id = req.user_id;
+		const { profile_id } = req.params;
 
 		const followAndUnfollowProfileService = new FollowAndUnfollowProfileService();
-		const postLiked = await followAndUnfollowProfileService.execute({user_id, profile_id});
+		const followProfile = await followAndUnfollowProfileService.execute({user_id, profile_id});
 
-		res.json(postLiked);
+		res.json(followProfile);
 	}
 }
 

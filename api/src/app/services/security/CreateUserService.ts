@@ -1,7 +1,6 @@
 import { User } from '../../models/User';
 import bcrypt from 'bcrypt';
 import { Profile } from '../../models/Profile';
-import { Types } from 'mongoose';
 
 // interface UserRequest {
 //   name: string;

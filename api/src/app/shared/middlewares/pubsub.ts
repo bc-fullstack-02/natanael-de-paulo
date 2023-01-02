@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import Rascal from 'rascal';
+import Rascal, { SubscriptionSession } from 'rascal';
 import  defaultConfig   from '../../config/config.json';
 
-
+defaultConfig.vhosts['/'].connection.url = process.env.AMQP_URL || defaultConfig.vhosts['/'].connection.url;
 const config = Rascal.withDefaultConfig(defaultConfig);
 const publisher = Object.keys(defaultConfig.vhosts['/'].publications);
 const consumer = Object.keys(defaultConfig.vhosts['/'].subscriptions);
@@ -11,28 +11,29 @@ const consumer = Object.keys(defaultConfig.vhosts['/'].subscriptions);
 //   sub: string;
 // }
 
-const pub = (
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => {
+//type: post
+//keys: pra que vamos publicar
+//value: payload da nagensagem, o post
+
+const pub = (req: Request, res: Response, next: NextFunction) => {
 	Rascal.Broker.create(Rascal.withDefaultConfig(config), (err, broker) => {
 		if(err) next(err);
 
-		req.publish = (type: any, keys: any, value: any) => new Promise((resolve, reject) => {
+		req.publish = (type: string, keys: string, value: any) => new Promise((resolve, reject) => {
+
 			const msg = {
 				type,
 				payload: value,
 				keys
 			};
 			
-			broker.publish(publisher as any, msg, (err, publication) => {
+			broker.publish(String(publisher), msg, (err, publication) => {
 				if(err) reject(err);
 				publication.on('error', reject);
 				console.log('publish ok');
 				resolve(value);
 			});
-		}); 
+		});
 		next();
 	});
 };
@@ -49,14 +50,16 @@ const sub = () => Promise.resolve(Rascal.withDefaultConfig(config))
 		}
 		resolve(broker);
 	})))
-	.then((broker : unknown) => new Promise((resolve, reject) => broker.subscribe(consumer, (err, subscription) => {
+	.then((broker) => new Promise((resolve, reject) => (broker as Rascal.Broker).subscribe(String(consumer), (err, subscription) => {
 		if(err) reject(err);
 		resolve(subscription);
 	})))
-	.then(subscription => {
-		subscription.on('error', (err) => {throw err;});
-		subscription.on('cancel', (err) => {throw err;});
-	});
+	.then((subscription: any ) => {
+		subscription.on('error', (err: Error) => {throw err;});
+		subscription.on('cancel', (err: Error) => {throw err;});
+
+		return subscription;
+	}) as Promise<SubscriptionSession>;
 
 
 export {pub, sub};

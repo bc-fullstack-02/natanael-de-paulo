@@ -33,29 +33,28 @@ services:
     networks:
       - mynet
     environment:
-    - RABBITMQ_DEFAULT_USER=admin
-    - RABBITMQ_DEFAULT_PASS=admin
+    - AMQP_URL=amqp://guest:guest@rabbitmq:5672
 
-  backend:
-      image: natanael/repository:1.0
-      restart: always
-      build:
-        context: ./
-      volumes:
-        - .:/src
-      depends_on:
-        - mongodb
-        - rabbitmq
-        - minio
-      environment:
-        PORT: 4000
-        MONGO_URL: mongodb://mongodb:27017/mydb
-        JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
-      ports:
-          - "4000:4000"
-      networks:
-        - mynet
-      # command: sh -c "npm run dev"
+  # backend:
+  #     restart: always
+  #     build:
+  #       context: ./
+  #     volumes:
+  #       - .:/src
+  #     depends_on:
+  #       - mongodb
+  #       - rabbitmq
+  #       - minio
+  #     environment:
+  #       PORT: 4000
+  #       MONGO_URL: mongodb://mongodb:27017/mydb
+  #       # JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
+  #       # AMQP_URL: amqp://guest:guest@rabbitmq:5672
+  #     ports:
+  #         - "4000:4000"
+  #     networks:
+  #       - mynet
+  #     # command: sh -c "npm run dev"
 
 networks:
   mynet:

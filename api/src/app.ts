@@ -9,7 +9,8 @@ import { ConnectDb } from './app/database';
 import { AppError } from './app/shared/middlewares/AppError';
 
 import swaggerDosc from './swagger.json';
-export const app = express();
+import { pub } from './app/shared/middlewares/pubsub';
+const app = express();
 
 dotenv.config();
 // CORS allow resource sharing between different origins on each request
@@ -17,8 +18,12 @@ app.use(cors());
 
 // adding Helmet to improve HTTP headers security
 // app.use(helmet());
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.use(pub);
+
 app.use('/v1', routes);
 app.use(AppError);
 
@@ -35,3 +40,5 @@ app.get('/terms', (req, res) => {
 		message: 'Termos de Serviço'
 	});
 });
+
+export { app };
