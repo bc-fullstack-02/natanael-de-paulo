@@ -10,11 +10,13 @@ class CreateCommentController {
 		const { description } = req.body;
 		const createCommentService  = new CreateCommentService();
 
-		const existPost = await Post.findById(post_id);
-		if(!existPost) throw new BadRequestException('Post Not Found!');
+		const post = await Post.findById(post_id);
+		if(!post) throw new BadRequestException('Post Not Found!');
 		if(!description) return res.status(400).json({ error: 'Description is required!'});
 		
-		const newComment = await createCommentService.execute({user_id, post_id, description}); 
+		const newComment = await createCommentService.execute({user_id, post_id, description});
+		await req.publish('comment', [post.profile], newComment);
+
 		res.status(201).json(newComment);
 	}
 }

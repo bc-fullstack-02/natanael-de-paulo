@@ -1,7 +1,7 @@
 import { model, Schema, Types} from 'mongoose';
 import { Redact } from './Redact';
 
-interface IPost {
+export interface IPost {
 	title: string;
 	description: string;
 	profile: Types.ObjectId

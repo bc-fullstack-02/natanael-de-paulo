@@ -12,7 +12,9 @@ class CreatePostController {
 		if(!title) return res.status(400).json({ error: 'Title is required!'});
 		if(!description) return res.status(400).json({ error: 'Description is required!'});
 		
-		const newPost = await createPostService.execute({title, description, user_id}).then(args => req.publish('post', profile?.followers, args));
+		const newPost = await createPostService.execute({title, description, user_id});
+		await req.publish('post', profile?.followers, newPost);
+		
 		res.status(201).json(newPost);
 	}
 }
