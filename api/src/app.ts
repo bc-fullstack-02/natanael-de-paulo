@@ -1,6 +1,7 @@
 import 'express-async-errors';
 import dotenv from 'dotenv';
 import express from 'express';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 // import helmet from 'helmet';
@@ -26,6 +27,8 @@ app.use(pub);
 
 app.use('/v1', routes);
 app.use(AppError);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // connect db
 app.use((req, res, next) => ConnectDb

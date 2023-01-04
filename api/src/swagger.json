@@ -13,9 +13,68 @@
     {
       "url": "http://localhost:3001/v1",
       "description": "API de teste"
+      
+    },
+    {
+      "schemes": [
+        "https",
+        "http"
+      ]
     }
   ],
+  
   "paths": {
+    "/security/login": { 
+      "post": {
+        "summary": "Logar usuario",
+        "description": "Rota responsavel por verificar se as credencias de login estão de acordo com o que está armazando no banco de dados. Apos confirmar usuario existente, irá gerar o token de acesso.",
+        "tags": ["Security"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "user": "User",
+                    "password": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+
+      }
+    },
+    "/security/register": {
+      "post": {
+        "summary": "Cadastrar usuario",
+        "description": "Rota responsavel por cadastrar  usuario, encriptografar a senha e salvar este usuario no banco de dados com a senha encriptografada.",
+        "tags": ["Security"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "Name do perfil",
+                    "user": "Nome de Usuario",
+                    "password": "1234"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/posts": {
       "get":{
         "summary": "Listar posts",
@@ -26,6 +85,9 @@
           "200" : {
             "description": "OK",
             "content": {
+              "header": {
+                "Authorization": "Bearer "
+              },
               "application/json": {
                 "schema": {
                   "type": "object",
@@ -36,7 +98,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
       },
       "post": {
         "summary": "Criação de post",
@@ -79,7 +149,7 @@
         }
       }
     },
-    "/posts/{id}" : {
+    "/posts/{id}": {
       "get": {
         "summary":"Listar post pelo id",
         "description" : "Buscar post pelo id",
@@ -119,6 +189,14 @@
           }
         ]
       }
+    },
+    "/post/{id/like}":{
+      "post": {
+        "summary": "Curtir post",
+        "description": "Essa rota será responsavel por dar like e deslike em um determinado post",
+        "tags": ["Posts"],
+        "operationId": "CurtirNovoPost"
+      }
     }
   },
   "components": {
@@ -127,13 +205,148 @@
         "type": "object",
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "required": true
+          },
+          "profile": {
+            "type": "object",
+            "$ref": "#/components/schemas/Profile"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Profile"
+            }
           }
         }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "Digite o usuario para logar",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "description": "Digite a senha para logar",
+            "required": true
+          },
+          "profile": {
+            "type": "object",
+            "$ref": "#/components/schemas/Profile"
+          }
+        }
+      },
+      "Profile": {
+        "type":"object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true,
+            "minLength": 2
+          },
+          "email": {
+            "type": "string",
+            "minLength": 2
+          },
+          "image": {
+            "type": "boolean",
+            "default": false
+          },
+          "imageUrl": {
+            "type": "string",
+            "minLength": 2
+          },
+          "user": {
+            "required": true,
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          },
+          "following": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Profile"
+            }
+          },
+          "followers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Profile"
+            }
+          }
+        }
+      },
+      "Comment":{
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "required": true,
+            "minLength": 2
+          },
+          "post": {
+            "type": "object",
+            "$ref": "#/components/schemas/Post"
+          },
+          "profile": {
+            "type": "object",
+            "$ref": "#/components/schemas/Profile"
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Profile"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        },
+        "api_key": {
+          "type": "apiKey",
+          "name": "api_key",
+          "in": "header"
+        },
+        "auth": {
+          "type": "oauth2",
+          "authorizationUrl": "https://http://localhost:3001/api-docs/#/security/login",
+          "flow": "implicit"
+        }
       }
+    }
+  },
+  "security": {
+    "bearerAuth": [], 
+    "api_key": [],
+    "auth": []
+  },
+  "securityDefinitions": {
+    "bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description":"Insira o token JWT com o Bearer. Por exemplo: `Bearer: abcde12345 `."
     }
   }
 }

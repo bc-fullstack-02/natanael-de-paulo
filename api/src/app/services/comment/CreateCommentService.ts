@@ -24,8 +24,6 @@ class CreateCommentService {
 			comments: [...currentComments, newComment]
 		});
 		
-		// req.publish('comment', [args.profile], args) 
-		//rota de commentslike => req.publish('comment-like', [args.profile], args)
 		return newComment;
 	}
 }

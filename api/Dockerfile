@@ -14,7 +14,7 @@
 # RUN npm uninstall bcrypt 
 # RUN npm install bcrypt
 
-# # ENTRYPOINT ["npm", "start"]
+# # ENTRYPOINT ["npm", "dev"]
 
 # EXPOSE 4000
 

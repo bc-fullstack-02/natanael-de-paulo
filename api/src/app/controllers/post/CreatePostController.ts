@@ -6,8 +6,8 @@ class CreatePostController {
 	async handle(req: Request, res: Response){
 		const user_id  = req.user_id;
 		const { title, description } = req.body;
-		const createPostService  = new CreatePostService();
 		const profile = await Profile.findOne({ user: user_id });
+		const createPostService  = new CreatePostService();
 
 		if(!title) return res.status(400).json({ error: 'Title is required!'});
 		if(!description) return res.status(400).json({ error: 'Description is required!'});
