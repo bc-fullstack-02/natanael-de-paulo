@@ -10,7 +10,7 @@ import { ConnectDb } from './app/database';
 import { AppError } from './app/shared/middlewares/AppError';
 
 import swaggerDosc from './swagger.json';
-import { pub } from './app/shared/middlewares/pubsub';
+import { pub } from './app/shared/lib/pubsub';
 const app = express();
 
 dotenv.config();
@@ -21,7 +21,8 @@ app.use(cors());
 // app.use(helmet());
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+const urlencodedMiddleware =  express.urlencoded({extended: true});
+app.use((req, res, next) => (/^multipart\//i.test(String(req.get('Content-Type')))) ? next() : urlencodedMiddleware(req, res, next));
 
 app.use(pub);
 

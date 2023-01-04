@@ -9,10 +9,12 @@
   <body>
     <h1>Your messages are here</h1>
     <h2 id="msgBox"></h2>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       const msgBox = document.getElementById('msgBox')
       const token = prompt()
       const socket = io('/v1', { auth: { token } })
+
       socket.on('connect', () => {
         msgBox.innerHTML = `connected as ${socket.id}` + '<br />'
       })
@@ -40,7 +42,7 @@
       })
 
       socket.on('connect_error', err => {
-        alert(err)
+        console.log(err)
       })
     </script>
   </body>

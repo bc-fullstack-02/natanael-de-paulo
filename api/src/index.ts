@@ -1,7 +1,7 @@
 import { app } from './app';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import { sub } from './app/shared/middlewares/pubsub';
+import { sub } from './app/shared/lib/pubsub';
 import jwt from 'jsonwebtoken';
 import { Profile } from './app/models/Profile';
 import { SubscriptionSession } from 'rascal';

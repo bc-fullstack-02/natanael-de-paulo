@@ -4,15 +4,18 @@ interface Iprops{
   title: string;
   description: string;
 	user_id: string;
+	imagePath?: string | undefined
 }
 
 class CreatePostService {
-	async execute({ title, description, user_id }: Iprops) {
+	async execute({ title, description, user_id, imagePath }: Iprops) {
 		const profile = await Profile.findOne().where('user').equals(user_id);		
 		const post = await Post.create({
 			profile: profile?._id,
 			title: title,
-			description: description
+			description: description,
+			imagePath: imagePath? imagePath: undefined,
+			image: imagePath? true : false
 		});
 
 		return post;

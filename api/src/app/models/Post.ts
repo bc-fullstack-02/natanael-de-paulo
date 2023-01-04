@@ -7,6 +7,8 @@ export interface IPost {
 	profile: Types.ObjectId
 	comments: [Types.ObjectId];
 	likes: [Types.ObjectId];
+	image: boolean;
+	imagePath: string;
 } 
 
 export const Post = model<IPost>('Post', new Schema<IPost>({
@@ -24,6 +26,13 @@ export const Post = model<IPost>('Post', new Schema<IPost>({
 		// 		.then((count: number)  => count === 0),
 		// 	message: 'nao pode usar a palavra {VALUE}'
 		// }
+	},
+	image: {
+		type: Boolean,
+		default: false
+	},
+	imagePath:{
+		type: String,
 	},
 	profile: {
 		type: Schema.Types.ObjectId,
