@@ -11,15 +11,13 @@ interface MenuItemProps{
 export function MenuItem({ menuTitle, children, path} : MenuItemProps){
   return (
     <Link to={path}>
-      <li className='mt-5'>
-        <div className='flex items-center gap-4 px-4 rounded-full hover:bg-sky-400'>
-          <figure>
-            { children }
-          </figure>
-          <Text asChild={false} className="font-extrabold">
-            { menuTitle }
-          </Text>
-        </div>
+      <li className='flex items-center gap-2 px-4 rounded-full hover:bg-sky-400'>
+        <figure>
+          { children }
+        </figure>
+        <Text asChild={false} size="md" className="font-extrabold">
+          { menuTitle }
+        </Text>
       </li>
     </Link>
    

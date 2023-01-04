@@ -6,6 +6,7 @@ import { api } from "../../services/api";
 import * as Dialog from '@radix-ui/react-dialog'
 import { CreatePostButton } from '../../components/CreatePostButton'
 import { CreatePostDialog } from '../../components/CreatePostDialog'
+import { AuthHeader } from "../../services/authHeader";
 
 interface ProfileProps{
   _id: string;
@@ -26,26 +27,21 @@ interface PostProps{
 }
 
 export function Feed() {
-  const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
   const [open, setOpen] = useState(false)
   const [posts, setPosts] = useState<PostProps[]>([])
-
-  const authHeader = {
-    headers:{
-      Authorization: `Bearer ${token}`
-    }
-  }
+  const authHeader = AuthHeader()
+  
   useEffect(() => {
     refreshListPost()
-  }, [token])
+  }, [])
   
   const closeDialog = () => {
     setOpen(!open)
   }
 
   const refreshListPost = async () => {
-    const listPost = await api.get('/posts', authHeader );
+    const listPost = await api.get('/feed', authHeader );
     setPosts(listPost.data); 
   }
  
@@ -72,19 +68,17 @@ export function Feed() {
   
   return(
     <>
-      <header className="border-y border-slate-400 pl-4 fixed top-0 w-full">
-        <Text size="lg" className="font-extrabold"> Página Inicial </Text>
-      </header>
-
-      <div className='flex items-center border-b border-slate-200 gap-4 p-2 pl-4'>
+      <div className='flex items-center justify-center border border-slate-200 gap-4 p-2 pl-4'>
         <div className="flex items-center my-2">
           <AiOutlineUser size={24} className="text-slate-50"/>
         </div>
         <Dialog.Root open={open} onOpenChange={setOpen}>
-          <CreatePostButton user={ user }/>
-          <CreatePostDialog closeDialog={closeDialog} user={ user }/>
+          <CreatePostButton user={ user } />
+          <CreatePostDialog closeDialog={closeDialog} user={ user } setOpen={setOpen} open={open} refreshListPost={refreshListPost}/>
         </Dialog.Root>
       </div>
+
+      <div className="border border-slate-400 my-8"></div>
 
       <section className="">
         {posts && posts.map((post) => (

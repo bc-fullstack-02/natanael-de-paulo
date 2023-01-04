@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { Menu } from '../Menu'
+import { Text } from '../Text'
 
 interface IProps{
   // open: boolean;
@@ -9,18 +10,15 @@ interface IProps{
 }
 
 export function Theme({children} : IProps){
-  return(
-    <div className='w-screen h-screen flex text-white'>
-      <div className='basis-1/6 border-r border-slate-400 p-3 p'>
+  return (
+    <div className='max-w-[1366px] flex w-full h-full relative gap-4'>
+      <aside className="border-r border-slate-400 bg-gray-500 basis-1/12 ">
         <Menu/>
-      </div>
-      
-      <div className='flex-1 overflow-y-auto scroll-smooth'>
+      </aside>
+      <main className='h-full flex basis-11/12 text-white px-1'>
         { children }
-      </div>
-      <div className='basis-1/6 border-l border-slate-400 p-3 p'>
-        
-      </div>
+      </main>
     </div>
+    
   )
 }

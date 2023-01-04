@@ -10,7 +10,7 @@ interface FormProps{
 	className?: string;
 	formTitle: string;
 	submitFormButtonText: string;
-	submitFormButtonAction: (...params : any[]) => Promise<void>
+	submitFormButtonAction: (...params : string[]) => Promise<void>
 	linkDescription: string[];
 	routeName: string;
 	children?: ReactNode;

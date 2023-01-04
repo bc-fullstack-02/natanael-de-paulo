@@ -1,48 +1,20 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'
-import { api } from '../../services/api';
-import jwtDecode from 'jwt-decode';
-
-
+import { Navigate } from 'react-router-dom'
 import { Text } from '../../components/Text';
-
-
 import { MdLockOutline, MdPersonOutline } from 'react-icons/md';
 import { AuthForm } from '../../components/AuthForm';
 import { WraperInput } from '../../components/AuthForm/WraperInput';
 import { Input } from '../../components/AuthForm/Input';
-
-interface UserToken {
-	sub: string;
-	user: string;
-	profile: string;
-}
+import { useContextAuth } from '../../contexts/useAuth';
 
 export function Login() {
-	const navigate = useNavigate()
-
-	const handleLogin = async (user: string, password: string) => {
-		try {
-			const { data } = await api.post('/security/login', {
-				user,
-				password
-			})
+	const { singIn, isAuthenticated } = useContextAuth()
 	
-			const decodedToken = jwtDecode(data.token) as UserToken
-			localStorage.setItem("user_id", decodedToken.sub)
-			localStorage.setItem("user", decodedToken.user)
-			localStorage.setItem("token", data.token)
-			localStorage.setItem("profile", decodedToken.profile)
-
-			return navigate('/profile');
-		} catch (error) {
-			console.error(error);
-			alert("Ocorreu um error ao logar.")
-		}
+	if(isAuthenticated == true) {
+    return <Navigate to='/home' replace />
 	}
 
 	return(
-		<AuthForm formTitle='Faça login e começe a usar!' submitFormButtonText='Entrar' linkDescription={['Não possui conta?', 'Crie uma agora']} routeName='/signup' submitFormButtonAction={handleLogin} typeSubmit="login">
+		<AuthForm formTitle='Faça login e começe a usar!' submitFormButtonText='Entrar' linkDescription={['Não possui conta?', 'Crie uma agora']} routeName='/signup' submitFormButtonAction={singIn} typeSubmit="login">
 			<label htmlFor="user" className='space-y-1'>
 				<Text asChild={false} size="lg"> Login </Text>
 				<WraperInput>

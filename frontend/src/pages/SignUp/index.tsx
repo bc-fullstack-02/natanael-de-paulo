@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { api } from '../../services/api';
 
 import { MdLockOutline, MdPersonOutline } from 'react-icons/md';
@@ -7,9 +7,17 @@ import { AuthForm } from '../../components/AuthForm';
 import { WraperInput } from '../../components/AuthForm/WraperInput';
 import { Input } from '../../components/AuthForm/Input';
 import { Text } from '../../components/Text';
+import { useContextAuth } from '../../contexts/useAuth';
 
 export function SignUp() {
-  const navigate = useNavigate();
+  const { isAuthenticated } = useContextAuth()
+  const navigate = useNavigate()
+
+  
+	if(isAuthenticated == true) {
+    return <Navigate to='/home' replace />
+	}
+
   const handleRegisterUser = async (name: string, user: string, password: string) => {
     try {
       await api.post('/security/register', {

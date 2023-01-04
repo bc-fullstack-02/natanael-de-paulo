@@ -1,4 +1,4 @@
-import React, {FormEvent} from 'react'
+import React, {FormEvent, useState} from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { Button } from '../Button'
@@ -6,10 +6,15 @@ import { Text } from '../Text'
 import { api } from '../../services/api'
 import { Input } from '../AuthForm/Input'
 import { AiOutlineUser } from 'react-icons/ai'
+import { AuthHeader } from '../../services/authHeader'
+import { DropZone } from '../DropZone'
 
 interface CreatePostDialogProps{
-  closeDialog: () => void
-  user: string | null
+  closeDialog: () => void;
+  user: string | null;
+  refreshListPost: () => Promise<void>;
+  open: boolean;
+  setOpen: any;
 }
 
 interface FormElements extends HTMLFormControlsCollection{
@@ -22,8 +27,9 @@ interface FormElement extends HTMLFormElement{
 }
 
 
-export function CreatePostDialog({closeDialog, user} : CreatePostDialogProps){
-  const token = localStorage.getItem("token")
+export function CreatePostDialog({closeDialog, user, refreshListPost} : CreatePostDialogProps){
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const authHeader = AuthHeader()
 
   const handleSubmit = async (event: FormEvent<FormElement>) => {
 		event.preventDefault()
@@ -32,9 +38,12 @@ export function CreatePostDialog({closeDialog, user} : CreatePostDialogProps){
       title: form.elements.title.value,
       description: form.elements.description.value
     }
+
+    console.log(selectedFile);
     try {
-      await api.post('/posts', newPost, { headers: { Authorization : `Bearer ${token}`}});
-      closeDialog();
+      await api.post('/posts', newPost, authHeader);
+      closeDialog()
+      refreshListPost()
     } catch (error) {
       console.error(error);
     }
@@ -71,6 +80,9 @@ export function CreatePostDialog({closeDialog, user} : CreatePostDialogProps){
             <Text> O que você está pensando? </Text>
             <textarea placeholder='Diga o que está pensando...' id='description' className='w-full bg-transparent outline-none flex-1 text-gray-100 text-xs placeholder:text-gray-400 shadow appearance-none focus:outline-none focus:shadow-outline  autofill:bg-transparent break-words whitespace-pre-wrap'></textarea>
           </label>
+
+          {/* <DropZone onFileUploaded={setSelectedFile}/> */}
+
           <footer className='flex justify-between gap-4'>
             <Button type='submit' className='max-w-[10em]'>
                 Postar

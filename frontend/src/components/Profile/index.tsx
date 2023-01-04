@@ -1,10 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import { AiOutlineComment, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { Button } from "../Button";
 import { Heading } from "../Heading";
 import { Text } from "../Text";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { AuthHeader } from "../../services/authHeader";
+import { useContextAuth } from "../../contexts/useAuth";
 
 interface ProfileProps{
   _id: string;
@@ -24,34 +25,22 @@ interface PostProps{
   updatedAt: string;
 }
 
-
-
 export function Profile(){
   const user = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
-  const navigate = useNavigate()
-
   const [myPosts, setMyPosts] = useState<PostProps[]>([])
+  const authHeader = AuthHeader()
 
-  const authHeader = {
-    headers:{
-      Authorization: `Bearer ${token}`
-    }
-  } 
+  const { signOut } = useContextAuth()
 
   useEffect(() => {
     const loadMyPosts = async ()  => {
       const response = await api.get('/posts', authHeader)
       setMyPosts(response.data)
     };
-  
-    loadMyPosts()
-  }, [token])
 
-  const logout = () => {
-    localStorage.clear();
-    navigate('/')
-  }
+    loadMyPosts()
+  }, [])
+
 
   return(
     <div className="basis-5/6">
@@ -61,7 +50,7 @@ export function Profile(){
             <Text asChild={false} className="font-extrabold">{ user }</Text>
           </div>
 
-          <Button className="max-w-[15em]" onClick={logout}>
+          <Button className="max-w-[15em]" onClick={signOut}>
             Sair  
           </Button>
         </Heading>
