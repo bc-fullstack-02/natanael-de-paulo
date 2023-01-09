@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-
+import { MdOutlineUploadFile } from 'react-icons/md'
+import { AiOutlineFileImage } from 'react-icons/ai'
+import { Text } from '../Text'
 interface Props{
   onFileUploaded: (file: File) => void
+  selectedFile: File | undefined
 }
 
-export function DropZone({onFileUploaded} : Props) {
-const [selectedFileUrl, setSelectedFileUrl] = useState('')
+export function DropZone({onFileUploaded, selectedFile} : Props) {
+  const [selectedFileUrl, setSelectedFileUrl] = useState('')
   const onDrop = useCallback((acceptedFiles: any[]) => {
     const file = acceptedFiles[0];
     const fileUrl = URL.createObjectURL(file);
@@ -16,13 +19,23 @@ const [selectedFileUrl, setSelectedFileUrl] = useState('')
   }, [onFileUploaded])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
+  console.log('selectedFileUrl',selectedFileUrl);
+  
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
+    <div className='flex items-center gap-2' {...getRootProps()}>
+      <input {...getInputProps()} /> 
+      
+      { 
+        selectedFileUrl ? 
+          <div className='p-2 border border-slate-400 rounded'>
+            <img src={selectedFileUrl} alt='Foto' id='image' /> 
+          </div> 
+          : <AiOutlineFileImage  size={24}/>
+      }
+      
       {
         isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>selectedFileUrl</p>
+          (!selectedFile && <Text className='text-slate-400 '>Solte os arquivos aqui...</Text>) : (!selectedFileUrl && <Text className='text-slate-400'> Arraste e solte arquivos aqui ou clique para selecionar os arquivos... </Text>)
       }
     </div>
   )

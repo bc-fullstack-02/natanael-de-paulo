@@ -20,6 +20,7 @@ interface CreatePostDialogProps{
 interface FormElements extends HTMLFormControlsCollection{
 	title: HTMLInputElement;
 	description: HTMLInputElement;
+  image: HTMLInputElement;
 }
 
 interface FormElement extends HTMLFormElement{
@@ -28,22 +29,29 @@ interface FormElement extends HTMLFormElement{
 
 
 export function CreatePostDialog({closeDialog, user, refreshListPost} : CreatePostDialogProps){
-  const [selectedFile, setSelectedFile] = useState<File>()
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const authHeader = AuthHeader()
+
+  const data = new FormData()
 
   const handleSubmit = async (event: FormEvent<FormElement>) => {
 		event.preventDefault()
 		const form = event.currentTarget
-    const newPost = {
-      title: form.elements.title.value,
-      description: form.elements.description.value
+    const data = new FormData();
+
+    data.append("title", form.elements.title.value);
+    data.append("description", form.elements.description.value);
+
+    if (selectedFile) {
+      data.append("image", selectedFile);
     }
 
     console.log(selectedFile);
     try {
-      await api.post('/posts', newPost, authHeader);
+      await api.post('/posts', data, authHeader);
       closeDialog()
       refreshListPost()
+      setSelectedFile(undefined)
     } catch (error) {
       console.error(error);
     }
@@ -81,7 +89,7 @@ export function CreatePostDialog({closeDialog, user, refreshListPost} : CreatePo
             <textarea placeholder='Diga o que está pensando...' id='description' className='w-full bg-transparent outline-none flex-1 text-gray-100 text-xs placeholder:text-gray-400 shadow appearance-none focus:outline-none focus:shadow-outline  autofill:bg-transparent break-words whitespace-pre-wrap'></textarea>
           </label>
 
-          {/* <DropZone onFileUploaded={setSelectedFile}/> */}
+          <DropZone onFileUploaded={setSelectedFile} selectedFile={selectedFile} />
 
           <footer className='flex justify-between gap-4'>
             <Button type='submit' className='max-w-[10em]'>
