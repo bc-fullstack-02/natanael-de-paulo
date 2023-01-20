@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tailwindcss": "npx tailwindcss -i ./src/styles/index.css -o ./dist/output.css --watch"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.2",
