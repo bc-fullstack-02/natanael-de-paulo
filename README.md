@@ -12,18 +12,25 @@
 - jwt-decode;
 - react-router-dom;
 - react-icons
+- clsx
+- react-dropzone
 
 **Back-end:** 
 - node;
 - typeScript 
 - express; 
+- express-async-errors
 - mongoDB; 
 - mongoose;
 - jsonwebtoken
 - bcrypt;
-- express-async-errors;
 - helmet;
 - cors
+- dotenv
+- swagger-ui-express
+- socket.io
+- rascal
+- multer
 
 ## Mais detalhes aqui
 
