@@ -1,28 +1,12 @@
 import { User } from '../../models/User';
 import bcrypt from 'bcrypt';
 import { Profile } from '../../models/Profile';
-
-// interface UserRequest {
-//   name: string;
-//   user: string;
-//   password: string;
-// 	email?: string;
-// 	image?: boolean;
-// 	imageUrl?: string;
-// }
-
-interface IUserProps{
-	name: string;
-	user: string;
-	password: string;
-}
-
+import { CreateUserType } from '../../../utils/types/UserTypes';
 
 class CreateUserService {
-	async execute({ user, password, name }: IUserProps) {
+	async execute({ user, password, name }: CreateUserType) {
 		try {
 			const passwordHash = await bcrypt.hash(password, 10);
-
 			const newUser = await User.create({
 				user: user,
 				password: passwordHash
@@ -34,8 +18,8 @@ class CreateUserService {
 			});
 		
 			await User.findByIdAndUpdate(newUser._id, { profile: newProfile });
-
-			const newUserResponse = await User.findById(newUser._id);
+			
+			const newUserResponse = await User.findById(newUser._id).select('-password');
 			return newUserResponse;
 		} catch (error) {
 			return error;
