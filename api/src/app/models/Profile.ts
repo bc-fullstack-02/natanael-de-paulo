@@ -1,16 +1,7 @@
-import {model, Schema, Types} from 'mongoose';
+import {model, Schema} from 'mongoose';
+import { ProfileType } from '../../utils/types/ProfileTypes';
 
-interface IProfile {
-  name: string;
-  email: string;
-  image: boolean;
-  imageUrl: string;
-	user: Types.ObjectId;
-  following: Types.ObjectId;
-  followers: [Types.ObjectId]
-} 
-
-export const Profile = model<IProfile>('Profile', new Schema<IProfile>({
+const ProfileSchema = new Schema<ProfileType>({
 	name: {
 		type: String,
 		required: true,
@@ -41,4 +32,6 @@ export const Profile = model<IProfile>('Profile', new Schema<IProfile>({
 		type: Schema.Types.ObjectId,
 		ref: 'Profile'
 	}]
-}));
+});
+
+export const Profile = model<ProfileType>('Profile', ProfileSchema);

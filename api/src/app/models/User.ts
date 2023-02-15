@@ -1,12 +1,7 @@
-import { model, Schema, Types } from 'mongoose';
+import { model, Schema } from 'mongoose';
+import { UserType } from '../../utils/types/UserTypes';
 
-interface IUser{
-  user: string;
-  password: string;
-  profile: Types.ObjectId
-}
-
-export const User = model<IUser>('User', new Schema<IUser>({
+const UserSchema = new Schema<UserType>({
 	user: {
 		type: String,
 		unique: true,
@@ -22,4 +17,6 @@ export const User = model<IUser>('User', new Schema<IUser>({
 		type: Schema.Types.ObjectId,
 		ref: 'Profile'
 	}
-}));
+});
+
+export const User = model<UserType>('User', UserSchema);

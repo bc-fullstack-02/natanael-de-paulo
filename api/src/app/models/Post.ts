@@ -1,17 +1,8 @@
-import { model, Schema, Types} from 'mongoose';
+import { model, Schema} from 'mongoose';
+import { PostType } from '../../utils/types/PostTypes';
 import { Redact } from './Redact';
 
-export interface IPost {
-	title: string;
-	description: string;
-	profile: Types.ObjectId
-	comments: [Types.ObjectId];
-	likes: [Types.ObjectId];
-	image: boolean;
-	imagePath: string;
-} 
-
-export const Post = model<IPost>('Post', new Schema<IPost>({
+const PostSchema =  new Schema<PostType>({
 	title: {
 		type: String,
 		required: true,
@@ -46,4 +37,6 @@ export const Post = model<IPost>('Post', new Schema<IPost>({
 		type: Schema.Types.ObjectId,
 		ref: 'Profile'
 	}]
-},{ timestamps: true }));
+},{ timestamps: true });
+
+export const Post = model<PostType>('Post', PostSchema);

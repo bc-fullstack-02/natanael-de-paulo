@@ -1,14 +1,7 @@
-import {model, Schema, Types} from 'mongoose';
+import {model, Schema} from 'mongoose';
+import { CommentType } from '../../utils/types/CommentTypes';
 
-interface IComment {
-	description: string;
-	user: Types.ObjectId
-	post: Types.ObjectId;
-	profile: Types.ObjectId;
-	likes: [Types.ObjectId];
-} 
-
-export const Comment = model<IComment>('Comment', new Schema<IComment>({
+const CommentSchema = new Schema<CommentType>({
 	description: {
 		type: String,
 		required: true,
@@ -27,4 +20,6 @@ export const Comment = model<IComment>('Comment', new Schema<IComment>({
 		type: Schema.Types.ObjectId,
 		ref: 'Profile'
 	}]
-}));
+});
+
+export const Comment = model<CommentType>('Comment', CommentSchema);
