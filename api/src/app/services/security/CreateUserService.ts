@@ -1,7 +1,7 @@
 import { User } from '../../models/User';
 import bcrypt from 'bcrypt';
 import { Profile } from '../../models/Profile';
-import { CreateUserType } from '../../../utils/types/UserTypes';
+import { CreateUserType } from '../../shared/utils/types/UserTypes';
 
 class CreateUserService {
 	async execute({ user, password, name }: CreateUserType) {
