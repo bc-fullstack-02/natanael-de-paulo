@@ -1,5 +1,5 @@
 import {model, Schema} from 'mongoose';
-import { CommentType } from '../../utils/types/CommentTypes';
+import { CommentType } from '../shared/utils/types/CommentTypes';
 
 const CommentSchema = new Schema<CommentType>({
 	description: {

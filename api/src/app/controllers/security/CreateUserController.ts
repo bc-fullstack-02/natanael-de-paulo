@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { validateUserBody } from '../../../utils/validators/ValidateUserBody';
+import { validateUserBody } from '../../shared/utils/validators/ValidateUserBody';
 import { CreateUserService } from '../../services/security/CreateUserService';
 
 class CreateUserController {

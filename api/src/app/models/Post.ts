@@ -1,5 +1,5 @@
 import { model, Schema} from 'mongoose';
-import { PostType } from '../../utils/types/PostTypes';
+import { PostType } from '../shared/utils/types/PostTypes';
 import { Redact } from './Redact';
 
 const PostSchema =  new Schema<PostType>({
