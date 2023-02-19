@@ -11,3 +11,5 @@ export type CreateUserType = {
 	user: string;
 	password: string;
 }
+
+export type GetByIdUserType = Types.ObjectId | string
