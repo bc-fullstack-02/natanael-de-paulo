@@ -6,10 +6,15 @@ export type UserType = {
   profile: Types.ObjectId
 }
 
+export type GetByIdUserType = Types.ObjectId | string
+
 export type CreateUserType = {
 	name?: string;
 	user: string;
 	password: string;
 }
 
-export type GetByIdUserType = Types.ObjectId | string
+export type AuthUserType = {
+	user: string;
+	password: string;
+}

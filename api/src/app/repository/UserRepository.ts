@@ -24,6 +24,11 @@ class UserRepository {
 		await User.findByIdAndUpdate(newUser._id, { profile: newProfile });
 		return newUser;
 	}
+
+	async findUser(user: string){
+		const userData = await User.findOne({user}).where('user').equals(user);
+		return userData;
+	}
 }
 
 export const userRepository = new UserRepository();
