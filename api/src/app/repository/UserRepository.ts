@@ -2,6 +2,8 @@ import { Profile } from '../models/Profile';
 import { User } from '../models/User';
 import { CreateUserType, GetByIdUserType } from '../shared/utils/types/UserTypes';
 import bcrypt from 'bcrypt';
+import { Post } from '../models/Post';
+import { Comment } from '../models/Comment';
 
 class UserRepository {
 	async getById(user_id: GetByIdUserType) {
@@ -28,6 +30,17 @@ class UserRepository {
 	async findUser(user: string){
 		const userData = await User.findOne({user}).where('user').equals(user);
 		return userData;
+	}
+
+	async delete(user_id: string){
+		const user = await User.findById(user_id);
+
+		await Comment.find({profile: user?.profile._id }).deleteMany();
+		await Post.find({profile: user?.profile._id }).deleteMany();
+		await Profile.find({user: user_id}).deleteMany();
+		
+
+		return await User.findByIdAndDelete(user_id).select('-password');
 	}
 }
 
