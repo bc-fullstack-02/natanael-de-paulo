@@ -22,4 +22,4 @@ class UpdateUserService{
 	}
 }
 
-export { UpdateUserService };
+export const updateUserService = new UpdateUserService();
