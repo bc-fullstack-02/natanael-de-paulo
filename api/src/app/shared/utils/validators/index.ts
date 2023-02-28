@@ -1,4 +1,5 @@
 import { User } from '../../../models/User';
+import { userRepository } from '../../../repository/UserRepository';
 import { BadRequestException } from '../../errors/BadRequestException';
 
 class Validate{
@@ -8,7 +9,7 @@ class Validate{
 	}
 
 	async userIsRegistered(user: string){
-		const userAlreadyExists = await User.findOne({user});
+		const userAlreadyExists = await userRepository.findUser(user);
 		if (userAlreadyExists) throw new BadRequestException('User already exists!');
 		return true;
 	}
