@@ -35,7 +35,6 @@ export function AuthProvider({children} : AuthProviderProps ){
   const [token, setToken] = useState({} || null);
   const navigate = useNavigate()
 
-
   useEffect(() => {
     const recoveredToken = localStorage.getItem("token");
 

@@ -6,24 +6,8 @@ import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { AuthHeader } from "../../services/authHeader";
 import { useContextAuth } from "../../contexts/useAuth";
+import { PostProps} from "../../services/types";
 
-interface ProfileProps{
-  _id: string;
-  name: string;
-  user: string;
-  email: string;
-}
-
-interface PostProps{
-  _id: string;
-  title: string;
-  description: string;
-  profile: ProfileProps;
-  comments: [];
-  likes: [];
-  createdAt: string;
-  updatedAt: string;
-}
 
 export function Profile(){
   const user = localStorage.getItem('user');

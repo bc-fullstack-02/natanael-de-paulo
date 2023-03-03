@@ -37,7 +37,7 @@ export function Routes() {
           <Route path='/profile' element={<ProfilePage/>}></Route>
           <Route path='/friends' element={<FriendsPage />}></Route>
         </Route>
-        <Route path="*" element=''></Route>
+        <Route path="/*" element={<>asdasd</>}></Route>
       </Switch>
     </>
   )

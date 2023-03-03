@@ -46,7 +46,6 @@ export function CreatePostDialog({closeDialog, user, refreshListPost} : CreatePo
       data.append("image", selectedFile);
     }
 
-    console.log(selectedFile);
     try {
       await api.post('/posts', data, authHeader);
       closeDialog()
