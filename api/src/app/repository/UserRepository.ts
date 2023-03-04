@@ -12,13 +12,14 @@ class UserRepository {
 	}
 
 	async findUser(user: string){
-		const userData = await User.findOne({user}).where('user').equals(user).select('+password');
+		const userData = await User.findOne({$or: [{user}, {email: user}]}).select('+password');
 		return userData;
 	}
 
-	async create({user, passwordHash}: CreateUserType) {
+	async create({user, email, passwordHash}: CreateUserType) {
 		const newUser = await User.create({
-			user: user,
+			user,
+			email,
 			password: passwordHash
 		});
 

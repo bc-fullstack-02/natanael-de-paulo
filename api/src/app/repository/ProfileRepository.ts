@@ -16,8 +16,7 @@ class ProfileRepository {
 	async create(user: UserType, profile: ProfileType) {
 		const dataProfile = await Profile.create({
 			name: profile.name,
-			email: profile.email,
-			user: user._id,
+			user: user._id
 		});
 
 		return dataProfile;
