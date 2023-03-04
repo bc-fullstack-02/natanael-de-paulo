@@ -1,10 +1,10 @@
 import { Profile } from '../models/Profile';
 import { User } from '../models/User';
-import { CreateUserType, GetByIdUserType, UserType } from '../shared/utils/types/UserTypes';
+import { GetByIdUserType, UserType } from '../shared/types/UserTypes';
 import bcrypt from 'bcrypt';
 import { Post } from '../models/Post';
 import { Comment } from '../models/Comment';
-import {ProfileType } from '../shared/utils/types/ProfileTypes';
+import {ProfileType } from '../shared/types/ProfileTypes';
 
 
 class ProfileRepository {
@@ -16,10 +16,11 @@ class ProfileRepository {
 	async create(user: UserType, profile: ProfileType) {
 		const dataProfile = await Profile.create({
 			name: profile.name,
+			email: profile.email,
 			user: user._id,
 		});
 
-		await User.findByIdAndUpdate(user._id, { profile: dataProfile._id});
+		return dataProfile;
 	}
 
 	// 	const newProfile = await Profile.create({
