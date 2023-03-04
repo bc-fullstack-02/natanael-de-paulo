@@ -10,17 +10,22 @@ export type UserType = {
 
 export type GetByIdUserType = Types.ObjectId | string;
 
-export type CreateUserType = UserType
+export type UpdateUserType = {
+	user: Partial<UserType>;
+	profile: Partial<ProfileType>;
+}
 
-export type CreateUserRepositoryType = Pick<CreateUserType, 'user'> 
+export type CreateUserType = Partial<UserType> 
 & { passwordHash: string }
 
-export type UpdateUserRepositoryType = Pick<CreateUserType, 'user'> 
-& { passwordHash: string }
+export type UpdateUserRepositoryType = {
+	user: UserType;
+	passwordHash: string;
+}
+
+export type DeleteUserType =  Partial<UserType> 
 
 export type AuthUserType = {
 	user: string;
 	password: string;
 }
-
-export type DeleteUserType  = Pick<UserType, '_id' | 'profile'>;

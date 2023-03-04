@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { UserType } from '../shared/utils/types/UserTypes';
+import { UserType } from '../shared/types/UserTypes';
 
 const UserSchema = new Schema<UserType>({
 	user: {
@@ -11,7 +11,8 @@ const UserSchema = new Schema<UserType>({
 	password: {
 		type: String,
 		required: true,
-		minlength: 2  
+		minlength: 2,
+		select: false
 	},
 	profile: {
 		type: Schema.Types.ObjectId,

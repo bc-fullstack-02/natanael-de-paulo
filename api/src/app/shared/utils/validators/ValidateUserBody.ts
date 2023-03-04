@@ -1,8 +1,8 @@
 import { validate } from '.';
-import { AuthUserType, CreateUserType } from '../types/UserTypes';
+import { AuthUserType, UserType } from '../../types/UserTypes';
 
 class ValidateUserBody{
-	async create({user, password, profile}: CreateUserType) {
+	async create({user, password, profile}: UserType) {
 		validate.required(user, 'user',400);
 		validate.required(password, 'password',400);
 		validate.required(profile.name, 'name', 400);

@@ -1,5 +1,5 @@
 import {model, Schema} from 'mongoose';
-import { ProfileType } from '../shared/utils/types/ProfileTypes';
+import { ProfileType } from '../shared/types/ProfileTypes';
 
 const ProfileSchema = new Schema<ProfileType>({
 	name: {
