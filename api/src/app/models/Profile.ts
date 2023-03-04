@@ -7,10 +7,6 @@ const ProfileSchema = new Schema<ProfileType>({
 		required: true,
 		minLength: 2
 	},
-	email: {
-		type: String,
-		minLength: 2
-	},
 	image: {
 		type: Boolean,
 		default: false

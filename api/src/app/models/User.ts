@@ -7,6 +7,12 @@ const UserSchema = new Schema<UserType>({
 		unique: true,
 		required: true,
 		minlength: 2
+	},	
+	email: {
+		type: String,
+		unique: true,
+		required: true,
+		minLength: 2
 	},
 	password: {
 		type: String,
