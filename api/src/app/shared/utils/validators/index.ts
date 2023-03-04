@@ -3,19 +3,25 @@ import { userRepository } from '../../../repository/UserRepository';
 import { BadRequestException } from '../../errors/BadRequestException';
 import { UserType } from '../../types/UserTypes';
 
+interface Field{
+	name: string;
+	value: any
+}
+
 class Validate{
-	required(value: string, message: string, status?: number){
-		if (!value) throw new BadRequestException(`${message} is required`, status);
+	required(fields: Field[]){
+		for (const field of fields) {
+			if (!field.value) {
+				throw new BadRequestException(`${field.name} is required`);
+			}
+		}
 		return true;
 	}
 
-	async userIsRegistered({user, email}: Partial<UserType>){
-		const userAlreadyExists = await userRepository.findUser({
-			user: user,
-			email: email
-		});
-		
-		if (userAlreadyExists) throw new BadRequestException('User already exists!');
+	async userIsRegistered(user: string){
+		const userAlreadyExists = await userRepository.findUser(user);
+
+		if (userAlreadyExists) throw new BadRequestException('User or email already exists!');
 		return true;
 	}
 
@@ -27,7 +33,7 @@ class Validate{
 
 	async emailIsRegistered(email: string) {
 		const validatedEmail = await User.find({}).where('email').equals(email);
-		if (validatedEmail) throw new BadRequestException(`e-mail ${email} is already registered!`);
+		if (validatedEmail) throw new BadRequestException('Email is already registered!');
 		return true;
 	}
 }

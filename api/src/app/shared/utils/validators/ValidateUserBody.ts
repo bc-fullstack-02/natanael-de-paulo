@@ -3,24 +3,26 @@ import { AuthUserType, UserType } from '../../types/UserTypes';
 
 class ValidateUserBody{
 	async create({user, password, profile, email}: UserType) {
-		validate.required(user, 'user',400);
-		validate.required(password, 'password',400);
-		validate.required(email, 'email',400);
-		validate.required(profile.name, 'name', 400);
-		validate.emailFormat(email);
-		
-		await validate.userIsRegistered({user, email});
-    
+		const fieldsToValidate = [
+			{ name: 'user', value: user},
+			{ name: 'password', value: password },
+			{ name: 'email', value: email },
+			{ name: 'name', value: profile.name}
+		];
+		validate.required(fieldsToValidate);
+		await validate.userIsRegistered(user);
+		await validate.emailIsRegistered(email);
 		return true;
 	}
 
 	async auth({user, password, email}: AuthUserType){
-		if(user || email) {
-			if(user) validate.required(user, 'user', 400);
-			if(email) validate.emailFormat(email);
-		}
-		validate.required(password, 'password', 400);
+		const fieldsToValidate = [
+			{ name: 'user', value: user || email},
+			{ name: 'password', value: password },
+		];
 
+		validate.required(fieldsToValidate);
+		if(email) validate.emailFormat(email);
 		return true;
 	}
 
