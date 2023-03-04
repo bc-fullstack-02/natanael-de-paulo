@@ -2,11 +2,12 @@ import { compare } from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { userRepository } from '../../repository/UserRepository';
 import { BadRequestException } from '../../shared/errors/BadRequestException';
-import { AuthUserType } from '../../shared/utils/types/UserTypes';
+import { AuthUserType } from '../../shared/types/UserTypes';
 
 class AuthUserService {
-	async execute({user, password} : AuthUserType) {
-		const userData = await userRepository.findUser(user);
+	async execute({ user, password, email }: AuthUserType) {
+		const credentialLogin = user || email;
+		const userData = await userRepository.findUser(credentialLogin);
 		if (!userData) throw new BadRequestException('User or password is incorrect!');
 		const passwordMatch = await compare(password, userData.password);
 		if (!passwordMatch) throw new BadRequestException('User or password is incorrect!');
@@ -33,4 +34,4 @@ class AuthUserService {
 	}
 }
 
-export  const authUserService = new AuthUserService();
+export const authUserService = new AuthUserService();
