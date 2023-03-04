@@ -3,9 +3,10 @@ import { ProfileType } from './ProfileTypes';
 
 export type UserType = {
 	_id?: Types.ObjectId | string;
-	user: string
+	user: string;
+	email: string;
   password: string;
-  profile: ProfileType
+  profile: ProfileType;
 }
 
 export type GetByIdUserType = Types.ObjectId | string;
@@ -28,4 +29,5 @@ export type DeleteUserType =  Partial<UserType>
 export type AuthUserType = {
 	user: string;
 	password: string;
+	email: string;
 }

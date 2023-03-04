@@ -3,9 +3,9 @@ import { userRepository } from '../../repository/UserRepository';
 import bcrypt from 'bcrypt';
 
 class CreateUserService {
-	async execute({user, password}: UserType) {
+	async execute({user, password, email}: UserType) {
 		const passwordHash = await bcrypt.hash(password, 10);
-		const newUser = await userRepository.create({user, passwordHash});
+		const newUser = await userRepository.create({user, email, passwordHash});
 		return newUser;
 	}
 }

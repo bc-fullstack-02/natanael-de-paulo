@@ -1,6 +1,7 @@
 import { User } from '../../../models/User';
 import { userRepository } from '../../../repository/UserRepository';
 import { BadRequestException } from '../../errors/BadRequestException';
+import { UserType } from '../../types/UserTypes';
 
 class Validate{
 	required(value: string, message: string, status?: number){
@@ -8,8 +9,12 @@ class Validate{
 		return true;
 	}
 
-	async userIsRegistered(user: string){
-		const userAlreadyExists = await userRepository.findUser(user);
+	async userIsRegistered({user, email}: Partial<UserType>){
+		const userAlreadyExists = await userRepository.findUser({
+			user: user,
+			email: email
+		});
+		
 		if (userAlreadyExists) throw new BadRequestException('User already exists!');
 		return true;
 	}

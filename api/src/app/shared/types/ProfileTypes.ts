@@ -4,7 +4,6 @@ import { UserType } from './UserTypes';
 export type ProfileType = {
   _id?: string | Types.ObjectId
   name: string;
-  email?: string;
   image?: boolean;
   imageUrl?: string;
 	user: Types.ObjectId;
