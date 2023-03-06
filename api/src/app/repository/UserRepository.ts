@@ -5,7 +5,6 @@ import { Post } from '../models/Post';
 import { Comment } from '../models/Comment';
 
 class UserRepository {
-
 	async getById(user_id: GetByIdUserType) {
 		const getByIdUser = User.findById(user_id).populate('profile');
 		return getByIdUser;
@@ -14,6 +13,11 @@ class UserRepository {
 	async findUser(user: string){
 		const userData = await User.findOne({$or: [{user}, {email: user}]}).select('+password');
 		return userData;
+	}
+
+	async findAll(){
+		const users = await User.find({});
+		return users;
 	}
 
 	async create({user, email, passwordHash}: CreateUserType) {

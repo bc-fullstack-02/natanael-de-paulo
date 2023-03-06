@@ -1,10 +1,10 @@
-import { User } from '../../models/User';
+import { userRepository } from '../../repository/UserRepository';
 
 class ListUsersService{
 	async execute(){
-		const usersList = await User.find({});
+		const usersList = userRepository.findAll();
 		return usersList;
 	}
 }
 
-export { ListUsersService };
+export const listUsersService = new ListUsersService();
