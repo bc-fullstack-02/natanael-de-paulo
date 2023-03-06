@@ -23,13 +23,6 @@ class AuthUserService {
 				expiresIn: '30d',
 			}
 		);
-		// console.log({
-		// 	id: userData?._id,
-		// 	name: userData?.name,
-		// 	user: userData?.user,
-		// 	token}
-		// );
-    
 		return { token };
 	}
 }
