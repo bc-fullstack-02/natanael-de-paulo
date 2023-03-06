@@ -1,24 +1,21 @@
-import { User } from '../../models/User';
 import bcrypt from 'bcrypt';
-import { Profile } from '../../models/Profile';
-
-interface IProps {
-	user_id: string;
-  user: string;
-  password: string;
-}
+import { GetByIdUserType, UpdateUserType, UserType } from '../../shared/types/UserTypes';
+import { userRepository } from '../../repository/UserRepository';
+import { BadRequestException } from '../../shared/errors/BadRequestException';
 
 class UpdateUserService{
-	async execute({ user_id, password, user } : IProps ) { 
+	async insertProfileInUser({user, profile}: UpdateUserType) { 
+		const userUpdated = await userRepository.insetProfileInUser({user, profile});
+		return userUpdated;
+	}
+
+	async update({user, password}: Pick<UserType, 'user' | 'password'>, user_id: GetByIdUserType){
+		const userToUpdate = await userRepository.getById(user_id);
+		if(!userToUpdate) throw new BadRequestException('user not found to update');
 		const passwordHash = await bcrypt.hash(password, 10);
+		const userUpdated = await userRepository.findByIdAndUpdate({user, passwordHash, user_id});
 
-		await User.findByIdAndUpdate(user_id, {
-			user: user,
-			password: passwordHash
-		});
-
-		const updateUser = User.findById(user_id);
-		return updateUser;
+		return userUpdated;
 	}
 }
 

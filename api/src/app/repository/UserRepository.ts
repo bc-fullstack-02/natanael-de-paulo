@@ -32,13 +32,14 @@ class UserRepository {
 		return userUpdated;
 	}
 
-	async findByIdAndUpdate({user, passwordHash}: UpdateUserRepositoryType){
-		await User.findByIdAndUpdate(user._id, {
-			user: user.user,
+	async findByIdAndUpdate({user, passwordHash, user_id}: UpdateUserRepositoryType){
+		const userUpdated = await User.findByIdAndUpdate(user_id, {
+			user,
 			password: passwordHash,
-		});
-	}
+		}, {new: true});
 
+		return userUpdated;
+	}
 
 	async delete(user: UserType){
 		await Comment.find({profile: user.profile }).deleteMany();
@@ -47,6 +48,10 @@ class UserRepository {
 		
 		return await User.findByIdAndDelete(user._id).select('-password');
 	}
+
+	// async update(){
+
+	// }
 }
 
 export const userRepository = new UserRepository();

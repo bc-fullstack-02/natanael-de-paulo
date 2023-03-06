@@ -25,10 +25,6 @@ class ValidateUserBody{
 		if(email) validate.emailFormat(email);
 		return true;
 	}
-
-	// async update(){
-    
-	// }
 }
 
 export const validateUserBody = new ValidateUserBody();

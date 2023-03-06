@@ -20,8 +20,9 @@ export type CreateUserType = Partial<UserType>
 & { passwordHash: string }
 
 export type UpdateUserRepositoryType = {
-	user: UserType;
+	user: string;
 	passwordHash: string;
+	user_id:  Types.ObjectId | string;
 }
 
 export type DeleteUserType =  Partial<UserType> 
