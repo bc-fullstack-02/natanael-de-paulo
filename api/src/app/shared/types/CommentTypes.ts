@@ -7,3 +7,5 @@ export type CommentType = {
 	profile: Types.ObjectId;
 	likes: [Types.ObjectId];
 } 
+
+export type CommentByIdType = Types.ObjectId | string;

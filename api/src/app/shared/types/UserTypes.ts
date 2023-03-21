@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 import { ProfileType } from './ProfileTypes';
 
 export type UserType = {
-	_id?: Types.ObjectId | string;
+	_id: Types.ObjectId | string;
 	user: string;
 	email: string;
   password: string;
@@ -10,6 +10,7 @@ export type UserType = {
 }
 
 export type UserByIdType = Types.ObjectId | string;
+
 
 export type UpdateUserType = {
 	user: Partial<UserType>;
