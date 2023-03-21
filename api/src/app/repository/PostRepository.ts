@@ -1,4 +1,5 @@
 import { Post } from '../models/Post';
+import { ProfileByIdType } from '../shared/types/ProfileTypes';
 
 class PostRepository {
 	// async getById(postId){
@@ -20,6 +21,11 @@ class PostRepository {
 	// 	const post = await Post.findByIdAndDelete(postId);
 	// 	return post;
 	// }
+
+	async deleteAll(profile_id: ProfileByIdType){
+		const query = Post.deleteMany({_id: profile_id});
+		return query;
+	}
 }
 
 export const postRepository = new PostRepository();

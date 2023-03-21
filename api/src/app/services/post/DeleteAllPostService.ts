@@ -1,8 +1,9 @@
-import { Post } from '../../models/Post';
+import { postRepository } from '../../repository/PostRepository';
+import { ProfileByIdType } from '../../shared/types/ProfileTypes';
 
 class DeleteAllPostService{
-	async execute(profile_id : any) { 
-		const postById = Post.deleteMany({}).where('profile').equals(profile_id);
+	async execute(profile_id: ProfileByIdType ) { 
+		const postById = postRepository.deleteAll(profile_id);
 		return postById;
 	}
 }
