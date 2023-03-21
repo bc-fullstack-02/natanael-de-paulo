@@ -1,9 +1,9 @@
-import { Comment } from '../../models/Comment';
+import { commentRepository } from '../../repository/CommentRepository';
+import { ProfileByIdType } from '../../shared/types/ProfileTypes';
 
 class DeleteAllCommentService {
-	async execute( profile_id : any ) { 
-		const commentToDelete = await Comment.deleteMany({profile: profile_id });
-		return commentToDelete;
+	async execute(profile_id: ProfileByIdType ) { 
+		await commentRepository.deleteAll(profile_id);
 	}
 }
 
