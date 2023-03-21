@@ -15,6 +15,11 @@ class UserRepository {
 		return userData;
 	}
 
+	async findUser(user: string){
+		const userData = await User.findOne({$or: [{user}, {email: user}]});
+		return userData;
+	}
+
 	async findAll(){
 		const users = await User.find({});
 		return users;
