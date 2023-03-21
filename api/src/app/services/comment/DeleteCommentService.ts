@@ -19,4 +19,4 @@ class DeleteCommentService {
 	}
 }
 
-export { DeleteCommentService };
+export const deleteCommentService = new DeleteCommentService();
