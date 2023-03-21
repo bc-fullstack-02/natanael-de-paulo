@@ -1,6 +1,6 @@
 import { Profile } from '../models/Profile';
 import { User } from '../models/User';
-import { GetByIdUserType, UserType } from '../shared/types/UserTypes';
+import { UserType } from '../shared/types/UserTypes';
 import bcrypt from 'bcrypt';
 import { Post } from '../models/Post';
 import { Comment } from '../models/Comment';
@@ -34,13 +34,10 @@ class ProfileRepository {
 	// 	return userData;
 	// }
 
-	// async delete(user: UserType){
-	// 	await Comment.find({profile: user.profile }).deleteMany();
-	// 	await Post.find({profile: user.profile }).deleteMany();
-	// 	await Profile.find({user: user._id}).deleteMany();
-		
-	// 	return await User.findByIdAndDelete(user._id).select('-password');
-	// }
+	async delete(profile_id: any){
+		const query = await Profile.deleteOne({_id: profile_id});
+		return query;
+	}
 }
 
 export const profileRepository = new ProfileRepository();

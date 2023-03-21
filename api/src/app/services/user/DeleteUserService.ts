@@ -1,11 +1,9 @@
 import { userRepository } from '../../repository/UserRepository';
-import { BadRequestException } from '../../shared/errors/BadRequestException';
+import { UserByIdType } from '../../shared/types/UserTypes';
 
 class DeleteUserService{
-	async execute(user_id: string) { 
-		const user = await userRepository.getById(user_id);
-		if(!user) throw new BadRequestException('usuario não encontrado');
-		const userDeleted = await userRepository.delete(user);
+	async execute(user_id: UserByIdType) { 
+		const userDeleted = await userRepository.delete(user_id);
 		return userDeleted;
 	}
 }

@@ -13,6 +13,4 @@ class DeletePostController {
 	}
 }
 
-export { DeletePostController };
-
 export const deletePostController = new DeletePostController();

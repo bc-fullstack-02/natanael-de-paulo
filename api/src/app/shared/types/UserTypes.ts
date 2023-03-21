@@ -9,7 +9,7 @@ export type UserType = {
   profile: ProfileType;
 }
 
-export type GetByIdUserType = Types.ObjectId | string;
+export type UserByIdType = Types.ObjectId | string;
 
 export type UpdateUserType = {
 	user: Partial<UserType>;
