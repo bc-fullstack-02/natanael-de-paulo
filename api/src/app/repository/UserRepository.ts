@@ -10,7 +10,7 @@ class UserRepository {
 		return getByIdUser;
 	}
 
-	async findUser(user: string){
+	async findUserForAuth(user: string){
 		const userData = await User.findOne({$or: [{user}, {email: user}]}).select('+password');
 		return userData;
 	}

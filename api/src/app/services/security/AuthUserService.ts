@@ -7,7 +7,7 @@ import { AuthUserType } from '../../shared/types/UserTypes';
 class AuthUserService {
 	async execute({ user, password, email }: AuthUserType) {
 		const credentialLogin = user || email;
-		const userData = await userRepository.findUser(credentialLogin);
+		const userData = await userRepository.findUserForAuth(credentialLogin);
 		if (!userData) throw new BadRequestException('User or password is incorrect!');
 		const passwordMatch = await compare(password, userData.password);
 		if (!passwordMatch) throw new BadRequestException('User or password is incorrect!');
