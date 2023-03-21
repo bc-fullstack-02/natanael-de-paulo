@@ -1,21 +1,22 @@
 import { Request, Response } from 'express';
-import { Profile } from '../../models/Profile';
-import { CreatePostService } from '../../services/post/CreatePostService';
+import { createPostService } from '../../services/post/CreatePostService';
+import { getUserByIdService } from '../../services/user/GetUserByIdService';
+import { PostType } from '../../shared/types/PostTypes';
+import { validatePostBody } from '../../shared/utils/validators/ValidadePostBody';
 
 class CreatePostController {
 	async handle(req: Request, res: Response) {
+		validatePostBody.create(req.body);
+		const {title, description} = req.body as Pick<PostType, 'title' | 'description'>;
 		const imagePath = req.file?.filename;
-		const user_id = req.user_id;
-		const { title, description } = req.body;
-		const profile = await Profile.findOne({ user: user_id });
-		const createPostService = new CreatePostService();
-
-		if (!title) return res.status(400).json({ error: 'Title is required!' });
-		if (!description) return res.status(400).json({ error: 'Description is required!' });
-
-		const newPost = await createPostService.execute({ title, description, user_id, imagePath });
+		const profile = await getUserByIdService.execute(req.user_id).then(user => user.profile);
+		const newPost = await createPostService.execute({
+			title, 
+			description, 
+			profile, 
+			imagePath
+		});
 		await req.publish('post', profile?.followers, newPost);
-
 		res.status(201).json(newPost);
 	}
 }

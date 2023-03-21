@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { ProfileType } from './ProfileTypes';
 
 export type PostType = {
 	title: string;
@@ -9,3 +10,10 @@ export type PostType = {
 	image: boolean;
 	imagePath: string;
 } 
+
+export type CreatePostType = {
+	title: string;
+	description: string;
+	profile: ProfileType;
+	imagePath: string;
+}

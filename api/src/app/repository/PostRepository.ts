@@ -1,4 +1,5 @@
 import { Post } from '../models/Post';
+import { CreatePostType } from '../shared/types/PostTypes';
 import { ProfileByIdType } from '../shared/types/ProfileTypes';
 
 class PostRepository {
@@ -11,6 +12,18 @@ class PostRepository {
 	// 	const posts = await Post.find({});
 	// 	return posts;
 	// }
+
+	async create({title, description, profile, imagePath}: CreatePostType){
+		const query = await Post.create({
+			profile: profile._id,
+			title: title,
+			description: description,
+			imagePath: imagePath? imagePath: undefined,
+			image: imagePath? true : false
+		});
+
+		return query;
+	}
 
 	// async update(postId){
 	// 	const post = await Post.findByIdAndUpdate(postId, {});

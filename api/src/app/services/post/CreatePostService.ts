@@ -1,27 +1,12 @@
-import { Post } from '../../models/Post';
-import { Profile } from '../../models/Profile';
-interface Iprops{
-  title: string;
-  description: string;
-	user_id: string;
-	imagePath?: string | undefined
-}
+import { postRepository } from '../../repository/PostRepository';
+import { CreatePostType } from '../../shared/types/PostTypes';
 
 class CreatePostService {
-	async execute({ title, description, user_id, imagePath }: Iprops) {
-		const profile = await Profile.findOne().where('user').equals(user_id);		
-		const post = await Post.create({
-			profile: profile?._id,
-			title: title,
-			description: description,
-			imagePath: imagePath? imagePath: undefined,
-			image: imagePath? true : false
-		});
-
+	async execute({ title, description, profile, imagePath }: CreatePostType) {
+		const post = await postRepository.create({title, description, profile, imagePath});
 		return post;
 	}
-
 	//rota de postlike => req.publish('post-like', [args.profile], args)
 }
 
-export { CreatePostService };
+export const createPostService = new CreatePostService();
