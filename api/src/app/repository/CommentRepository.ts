@@ -1,5 +1,6 @@
 import { Comment } from '../models/Comment';
-import { ProfileByIdType } from '../shared/types/ProfileTypes';
+import { PostByIdType } from '../shared/types/PostTypes';
+import { ProfileByIdType, ProfileType } from '../shared/types/ProfileTypes';
 
 class CommentRepository {
 	// async getById(postId){
@@ -17,10 +18,17 @@ class CommentRepository {
 	// 	return post;
 	// }
 
+	async deleteAllCommentsToPost(post_id: PostByIdType){
+		const query = await Comment.deleteMany({post: post_id,});
+		return query;
+	}
+
 	async deleteAll(profile_id: ProfileByIdType){
 		const query = await Comment.deleteMany({profile: profile_id });
 		return query;
 	}
 }
+
+// 
 
 export const commentRepository = new CommentRepository();

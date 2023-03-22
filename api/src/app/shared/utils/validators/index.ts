@@ -1,7 +1,7 @@
 import { User } from '../../../models/User';
+import { postRepository } from '../../../repository/PostRepository';
 import { userRepository } from '../../../repository/UserRepository';
 import { BadRequestException } from '../../errors/BadRequestException';
-import { UserType } from '../../types/UserTypes';
 
 interface Field{
 	name: string;
@@ -34,6 +34,12 @@ class Validate{
 	async emailIsRegistered(email: string) {
 		const validatedEmail = await User.findOne({}).where('email').equals(email);
 		if (validatedEmail) throw new BadRequestException('Email is already registered!');
+		return true;
+	}
+
+	async postExists(post_id: string){
+		const post = await postRepository.getById(post_id);
+		if (!post) throw new BadRequestException('Post does not exist!');
 		return true;
 	}
 }

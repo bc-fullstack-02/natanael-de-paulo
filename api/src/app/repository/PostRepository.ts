@@ -1,12 +1,12 @@
 import { Post } from '../models/Post';
-import { CreatePostType } from '../shared/types/PostTypes';
+import { CreatePostType, DeletePostType, PostByIdType } from '../shared/types/PostTypes';
 import { ProfileByIdType } from '../shared/types/ProfileTypes';
 
 class PostRepository {
-	// async getById(postId){
-	// 	const post = await Post.findById(postId);
-	// 	return post; 
-	// }
+	async getById(post_id: PostByIdType){
+		const query = await Post.findById(post_id);
+		return query; 
+	}
 
 	// async getAll(){
 	// 	const posts = await Post.find({});
@@ -30,13 +30,16 @@ class PostRepository {
 	// 	return post;
 	// }
 
-	// async delete(postId){
-	// 	const post = await Post.findByIdAndDelete(postId);
-	// 	return post;
-	// }
+	async delete({post_id, profile}: DeletePostType){
+		const query = await Post.deleteOne({
+			_id: post_id,
+			profile: profile._id
+		});
+		return query;
+	}
 
 	async deleteAll(profile_id: ProfileByIdType){
-		const query = Post.deleteMany({_id: profile_id});
+		const query = Post.deleteMany({profile: profile_id});
 		return query;
 	}
 }
