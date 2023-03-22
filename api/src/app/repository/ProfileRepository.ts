@@ -1,16 +1,17 @@
 import { Profile } from '../models/Profile';
 import { User } from '../models/User';
 import { UserType } from '../shared/types/UserTypes';
-import bcrypt from 'bcrypt';
-import { Post } from '../models/Post';
-import { Comment } from '../models/Comment';
-import {ProfileType } from '../shared/types/ProfileTypes';
-
+import { ProfileByIdType, ProfileType } from '../shared/types/ProfileTypes';
 
 class ProfileRepository {
-	// async getById(user_id: GetByIdUserType) {
-	// 	const getByIdUser = await User.findById(user_id).select('-password');
-	// 	return getByIdUser;
+	async getById(profile_id: ProfileByIdType) {
+		const query = await User.findById(profile_id);
+		return query;
+	}
+
+	// async findProfile(user_id: ProfileByIdType){
+	// 	const userData = await Profile.findOne({: user_id });
+	// 	return userData;
 	// }
 
 	async create(user: UserType, profile: ProfileType) {
@@ -27,14 +28,7 @@ class ProfileRepository {
 	// 		user: newUser._id,
 	// 	});
 
-	
-
-	// async findUser(user: string){
-	// 	const userData = await User.findOne({user}).where('user').equals(user);
-	// 	return userData;
-	// }
-
-	async delete(profile_id: any){
+	async delete(profile_id: ProfileByIdType){
 		const query = await Profile.deleteOne({_id: profile_id});
 		return query;
 	}
