@@ -10,10 +10,6 @@ class ValidatePostBody {
     
 		validate.required(fieldsToValidate);
 	}
-
-	async postId(post_id: string) {
-		await validate.postExists(post_id);
-	}
 }
 
 export const validatePostBody = new ValidatePostBody();

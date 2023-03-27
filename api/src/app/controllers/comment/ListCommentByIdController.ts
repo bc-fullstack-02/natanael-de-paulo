@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
 import { listCommentByIdService } from '../../services/comment/ListCommentByIdService';
-import { validadeCommentBody } from '../../shared/utils/validators/ValidadeCommentBody';
+import { validateParams } from '../../shared/utils/validators/ValidadeParams';
 
 class ListCommentByIdController {
 	async handle(req: Request, res: Response){
-		const { post_id, comment_id } = req.params;
-		await validadeCommentBody.fields(post_id, comment_id);
-		const comment = await listCommentByIdService.execute(comment_id); 
+		await Promise.all([
+			await validateParams.postId(req.params.post_id),
+			await validateParams.commentId(req.params.comment_id)
+		]);
+		
+		const comment = await listCommentByIdService.execute(req.params.comment_id); 
 		res.status(200).json(comment);
 	}
 }
