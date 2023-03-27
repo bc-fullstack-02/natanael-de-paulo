@@ -9,6 +9,10 @@ class ProfileRepository {
 		return query;
 	}
 
+	async getAll(){
+		const query = await Profile.find();
+		return query;
+	}
 	// async findProfile(user_id: ProfileByIdType){
 	// 	const userData = await Profile.findOne({: user_id });
 	// 	return userData;

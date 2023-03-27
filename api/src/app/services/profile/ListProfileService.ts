@@ -1,10 +1,10 @@
-import { Profile } from '../../models/Profile';
+import { profileRepository } from '../../repository/ProfileRepository';
 
 class ListProfileService {
-	async execute(user_id: string) {
-		const profileData = await Profile.find({}).where('user').ne(user_id);
-		return profileData;
+	async execute() {
+		const profiles = await profileRepository.getAll();
+		return profiles;
 	}
 }
 
-export { ListProfileService };
+export const listProfileService = new ListProfileService();

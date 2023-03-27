@@ -1,12 +1,9 @@
 import {Request, Response} from 'express';
-import { ListProfileService } from '../../services/profile/ListProfileService';
+import { listProfileService } from '../../services/profile/ListProfileService';
 
 class ListProfileController {
 	async handle(req: Request, res: Response){
-		const user_id = req.user_id;
-		const listProfileService = new ListProfileService();
-		const profiles = await listProfileService.execute(user_id);
-		
+		const profiles = await listProfileService.execute();
 		res.json(profiles);
 	}
 }
