@@ -9,8 +9,12 @@ class DeletePostController {
 		await validatePostBody.postId(req.params.post_id);
 		const { post_id } = req.params;
 		const profile = await getUserByIdService.execute(req.user_id).then(user => user.profile);
-		await deleteAllCommentToPostService.execute(post_id);
-		await deletePostService.execute({profile, post_id});
+
+		await Promise.all([
+			deleteAllCommentToPostService.execute(post_id),
+			deletePostService.execute({profile, post_id})
+		]);
+		
 		res.status(200).json({msg: 'Post deleted successfully'});
 	}
 }
