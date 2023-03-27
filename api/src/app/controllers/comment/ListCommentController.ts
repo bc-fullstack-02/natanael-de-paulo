@@ -1,19 +1,12 @@
 import {Request, Response} from 'express';
 import { Post } from '../../models/Post';
-import { ListCommentService } from '../../services/comment/ListCommentService';
-import { BadRequestException } from '../../shared/errors/BadRequestException';
+import { listCommentService } from '../../services/comment/ListCommentService';
+import { validateParams } from '../../shared/utils/validators/ValidadeParams';
 
 class ListCommentController {
 	async handle(req: Request, res: Response){
-		const { post_id } = req.params;
-
-		const existPost = await Post.findById(post_id);
-
-		if(!existPost) throw new BadRequestException('Post Not Found!');
-
-		const listCommentService = new ListCommentService();	
-		
-		const commentList = await listCommentService.execute(post_id);
+		await validateParams.postId(req.params.post_id);
+		const commentList = await listCommentService.execute(req.params.post_id);
 		res.json(commentList);
 	}
 }
