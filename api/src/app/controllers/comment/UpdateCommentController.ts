@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import { Types } from 'mongoose';
-import { Post } from '../../models/Post';
-import { UpdateCommentService } from '../../services/comment/UpdateCommentService';
-import { BadRequestException } from '../../shared/errors/BadRequestException';
+import { listCommentByIdService } from '../../services/comment/ListCommentByIdService';
+import { updateCommentService } from '../../services/comment/UpdateCommentService';
+import { validateCommentBody } from '../../shared/utils/validators/ValidateCommentBody';
+import { validateParams } from '../../shared/utils/validators/ValidateParams';
 
 class UpdateCommentController {
 	async handle(req: Request, res: Response){
-		const { post_id, comment_id } = req.params;
-		const { description }  = req.body;
+		await Promise.all([
+			validateParams.postId(req.params.post_id),
+			validateParams.commentId(req.params.comment_id),
+			validateCommentBody.field(req.body.description)
+		]);
 
-		const existPost = await Post.findById(post_id);
-		const existComment = existPost?.comments.filter((comment) => String(comment._id) === comment_id);
-		if(!existPost || !existComment) throw new BadRequestException('Post or Comment Not Found!');
-		const updateCommentService  = new UpdateCommentService();
-		const commentUpdated = await updateCommentService.execute({post_id, comment_id, description}); 
+		const comment = await listCommentByIdService.execute(req.params.comment_id);
+		const commentUpdated = await updateCommentService.execute(comment._id, req.body.description); 
 		res.status(200).json(commentUpdated);
 	}
 }

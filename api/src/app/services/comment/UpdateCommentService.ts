@@ -1,27 +1,11 @@
-import { Comment } from '../../models/Comment';
-import {  Post } from '../../models/Post';
-
-interface Iprops{
-  post_id: string;
-  comment_id: string;
-  description: string;
-}
+import { commentRepository } from '../../repository/CommentRepository';
+import { CommentByIdType } from '../../shared/types/CommentTypes';
 
 class UpdateCommentService {
-	async execute( { post_id, comment_id, description } : Iprops ) { 
-    
-		await Comment.findByIdAndUpdate(comment_id, {
-			description: description
-		});
-
-		const getComments = await Comment.find({ post: post_id });
-		
-		await Post.findByIdAndUpdate(post_id, {
-			comments: [...getComments]
-		});
-		
-		return 'Comentario atualizado';
+	async execute(comment_id: CommentByIdType, description: string ) { 
+		const commentUpdated = await commentRepository.update(comment_id, description);
+		return commentUpdated;
 	}
 }
 
-export { UpdateCommentService };
+export const updateCommentService = new UpdateCommentService();

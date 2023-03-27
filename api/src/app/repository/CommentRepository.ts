@@ -33,10 +33,13 @@ class CommentRepository {
 		const query = await Post.findOneAndUpdate({_id: post_id}, {$pull: {comments: comment_id}}, { runValidators: true, new: true});
 		return query;
 	}
-	// async update(postId){
-	// 	const post = await Post.findByIdAndUpdate(postId, {});
-	// 	return post;
-	// }
+
+	async update(comment_id: CommentByIdType, description: string){
+		const query = await Comment.findByIdAndUpdate(comment_id, {
+			$set: { description }
+		}, {new: true});
+		return query;
+	}
 
 	async delete({post_id, comment_id}: DeleteCommentType){
 		const query = await Comment.deleteOne({
