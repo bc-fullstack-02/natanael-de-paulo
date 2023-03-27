@@ -1,5 +1,5 @@
 import { Post } from '../models/Post';
-import { CreatePostType, DeletePostType, PostByIdType } from '../shared/types/PostTypes';
+import { CreatePostType, DeletePostType, PostByIdType, PostType } from '../shared/types/PostTypes';
 import { ProfileByIdType } from '../shared/types/ProfileTypes';
 
 class PostRepository {
@@ -9,8 +9,8 @@ class PostRepository {
 	}
 
 	async getAll(profile_id: ProfileByIdType){
-		const posts = await Post.find({profile: profile_id});
-		return posts;
+		const query: PostType[] = await Post.find({profile: profile_id});
+		return query;
 	}
 
 	async create({title, description, profile, imagePath}: CreatePostType){
