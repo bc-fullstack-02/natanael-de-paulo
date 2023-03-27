@@ -34,6 +34,16 @@ class CommentRepository {
 		return query;
 	}
 
+	async likeComment(comment_id: CommentByIdType, profile_id: ProfileByIdType){
+		const query = await Comment.findByIdAndUpdate({_id: comment_id}, {$addToSet: {likes: profile_id}}, { runValidators: true, new: true});
+		return query;
+	}
+
+	async unlikeComment(comment_id: CommentByIdType, profile_id: ProfileByIdType){
+		const query = await Comment.findOneAndUpdate({_id: comment_id}, {$pull: {likes: profile_id}}, { runValidators: true, new: true});
+		return query;
+	}
+
 	async update(comment_id: CommentByIdType, description: string){
 		const query = await Comment.findByIdAndUpdate(comment_id, {
 			$set: { description }
