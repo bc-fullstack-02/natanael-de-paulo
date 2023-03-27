@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createCommentService } from '../../services/comment/CreateCommentService';
 import { listPostByIdService } from '../../services/post/ListPostByIdService';
-import { updateCommentsToPostService } from '../../services/post/UpdateCommentsToPostService';
+import { updateCommentsToPostService } from '../../services/comment/UpdateCommentsToPostService';
 import { getUserByIdService } from '../../services/user/GetUserByIdService';
 import { validadeCommentBody } from '../../shared/utils/validators/ValidadeCommentBody';
 
@@ -18,7 +18,7 @@ class CreateCommentController {
 		const [profile, post] = data;
 		
 		const newComment = await createCommentService.execute({post, profile, description});
-		await updateCommentsToPostService.add(post, newComment);
+		await updateCommentsToPostService.add(post._id, newComment._id);
 		await req.publish('comment', [post.profile], newComment);
 
 		res.status(201).json(newComment);
