@@ -1,6 +1,6 @@
 import { Post } from '../models/Post';
-import { CreatePostType, DeletePostType, PostByIdType, PostType } from '../shared/types/PostTypes';
-import { ProfileByIdType } from '../shared/types/ProfileTypes';
+import { CreatePostType, DeletePostType, PostByIdType, PostType, UpdatePostType } from '../shared/types/PostTypes';
+import { ProfileByIdType, ProfileType } from '../shared/types/ProfileTypes';
 
 class PostRepository {
 	async getById(post_id: PostByIdType){
@@ -25,10 +25,14 @@ class PostRepository {
 		return query;
 	}
 
-	// async update(postId){
-	// 	const post = await Post.findByIdAndUpdate(postId, {});
-	// 	return post;
-	// }
+	async update({profile, post_id}: Pick<UpdatePostType, 'profile' | 'post_id'>, postData: Pick<UpdatePostType, 'title' | 'description'>){
+		const query = await Post.findOneAndUpdate({
+			_id: post_id,
+			profile: profile._id
+		}, postData, {new: true});
+		
+		return query;
+	}
 
 	async delete({post_id, profile}: DeletePostType){
 		const query = await Post.deleteOne({

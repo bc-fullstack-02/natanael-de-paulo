@@ -1,23 +1,16 @@
-import { Post } from '../../models/Post';
-
-interface IProps {
-	user_id: string;
-  post_id: string;
-  title: string;
-  description: string;
-}
+import { postRepository } from '../../repository/PostRepository';
+import { UpdatePostType } from '../../shared/types/PostTypes';
 
 class UpdatePostService{
-	async execute({user_id, post_id, title, description } : IProps ) { 
-		const post = {
+	async execute({profile, post_id, title, description}: UpdatePostType ) { 
+		const postData: Pick<UpdatePostType, 'title' | 'description'> = {
 			title,
 			description
 		};
 		
-		const updatedPost = Post.findByIdAndUpdate(post_id, post).where('user').equals(user_id);
-		
+		const updatedPost = await postRepository.update({profile, post_id}, postData);
 		return updatedPost;
 	}
 }
 
-export { UpdatePostService };
+export const updatePostService = new UpdatePostService();

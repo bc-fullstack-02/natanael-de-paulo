@@ -24,3 +24,10 @@ export type DeletePostType = {
 	profile: ProfileType;
 	post_id: Types.ObjectId | string;
 }
+
+export type UpdatePostType = { 
+	profile: ProfileType, 
+	post_id: PostByIdType, 
+	title: string, 
+	description: string, 
+}
