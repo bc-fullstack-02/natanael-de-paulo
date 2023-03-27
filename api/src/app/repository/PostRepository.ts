@@ -8,10 +8,10 @@ class PostRepository {
 		return query; 
 	}
 
-	// async getAll(){
-	// 	const posts = await Post.find({});
-	// 	return posts;
-	// }
+	async getAll(profile_id: ProfileByIdType){
+		const posts = await Post.find({profile: profile_id});
+		return posts;
+	}
 
 	async create({title, description, profile, imagePath}: CreatePostType){
 		const query = await Post.create({

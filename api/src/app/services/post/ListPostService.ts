@@ -1,12 +1,11 @@
-import { Post } from '../../models/Post';
-import { Profile } from '../../models/Profile';
+import { postRepository } from '../../repository/PostRepository';
+import { ProfileType } from '../../shared/types/ProfileTypes';
 
 class ListPostService {
-	async execute(user_id: string) {
-		const profile = await Profile.findOne({user: user_id});
-		const postList = await Post.find({profile: profile?._id}).populate('profile');
-		return postList;
+	async execute(profile: ProfileType) {
+		const post = await postRepository.getAll(profile._id);
+		return post;
 	}
 }
 
-export { ListPostService };
+export const listPostService = new ListPostService();
