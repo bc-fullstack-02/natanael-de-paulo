@@ -1,14 +1,14 @@
 import { Comment } from '../models/Comment';
 import { Post } from '../models/Post';
-import { CommentByIdType, CreateCommentType } from '../shared/types/CommentTypes';
+import { CommentByIdType, CreateCommentType, DeleteCommentType } from '../shared/types/CommentTypes';
 import { PostByIdType } from '../shared/types/PostTypes';
 import { ProfileByIdType } from '../shared/types/ProfileTypes';
 
 class CommentRepository {
-	// async getById(postId){
-	// 	const post = await Post.findById(postId);
-	// 	return post; 
-	// }
+	async getById(comment_id: CommentByIdType){
+		const query = await Comment.findById(comment_id);
+		return query; 
+	}
 
 	async findAll(post_id: PostByIdType){
 		const query = await Comment.find({ post: post_id });
@@ -37,6 +37,14 @@ class CommentRepository {
 	// 	const post = await Post.findByIdAndUpdate(postId, {});
 	// 	return post;
 	// }
+
+	async delete({post_id, comment_id}: DeleteCommentType){
+		const query = await Comment.deleteOne({
+			_id: comment_id,
+			post: post_id
+		});
+		return query;
+	}
 
 	async deleteAllCommentsToPost(post_id: PostByIdType){
 		const query = await Comment.deleteMany({post: post_id,});

@@ -1,18 +1,19 @@
 import { Request, Response } from 'express';
-import { Post } from '../../models/Post';
 import { deleteCommentService } from '../../services/comment/DeleteCommentService';
-import { BadRequestException } from '../../shared/errors/BadRequestException';
+import { updateCommentsToPostService } from '../../services/comment/UpdateCommentsToPostService';
+import { validadeCommentBody } from '../../shared/utils/validators/ValidadeCommentBody';
 
 class DeleteCommentController {
 	async handle(req: Request, res: Response){
 		const { post_id, comment_id } = req.params;
-		const existPost = await Post.findById(post_id);
-		if(!existPost) throw new BadRequestException('Post Not Found!');
-		// if(!title) return res.status(400).json({ error: 'Title is required!'});
-		// if(!description) return res.status(400).json({ error: 'Description is required!'});
+		await validadeCommentBody.delete(post_id, comment_id);
 		
-		const commentDeleted = await deleteCommentService.execute({post_id, comment_id}); 
-		res.status(200).json(commentDeleted);
+		await Promise.all([
+			await deleteCommentService.execute({post_id, comment_id}),
+			await updateCommentsToPostService.remove(post_id, comment_id)
+		]);
+
+		res.status(200).json('comment deleted successfully');
 	}
 }
 

@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { PostType } from './PostTypes';
+import { PostByIdType, PostType } from './PostTypes';
 import { ProfileType } from './ProfileTypes';
 
 export type CommentType = {
@@ -10,10 +10,15 @@ export type CommentType = {
 	likes: [Types.ObjectId];
 } 
 
-export type CommentByIdType = Types.ObjectId | string;
+export type CommentByIdType = string | Types.ObjectId;
 
 export type CreateCommentType = {
 	post: PostType;
 	profile: ProfileType;
 	description: string;
+}
+
+export type DeleteCommentType = {
+	post_id: PostByIdType;
+	comment_id: CommentByIdType;
 }

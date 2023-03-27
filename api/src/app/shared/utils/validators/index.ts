@@ -1,4 +1,5 @@
 import { User } from '../../../models/User';
+import { commentRepository } from '../../../repository/CommentRepository';
 import { postRepository } from '../../../repository/PostRepository';
 import { userRepository } from '../../../repository/UserRepository';
 import { BadRequestException } from '../../errors/BadRequestException';
@@ -46,6 +47,12 @@ class Validate{
 	async postExists(post_id: string){
 		const post = await postRepository.getById(post_id);
 		if (!post) throw new BadRequestException('Post does not exist!');
+		return true;
+	}
+
+	async commentExists(comment_id: string){
+		const comment = await commentRepository.getById(comment_id);
+		if (!comment) throw new BadRequestException('Comment does not exist!');
 		return true;
 	}
 }
