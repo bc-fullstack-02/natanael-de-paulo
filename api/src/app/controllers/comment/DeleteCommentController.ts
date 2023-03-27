@@ -6,7 +6,7 @@ import { validadeCommentBody } from '../../shared/utils/validators/ValidadeComme
 class DeleteCommentController {
 	async handle(req: Request, res: Response){
 		const { post_id, comment_id } = req.params;
-		await validadeCommentBody.delete(post_id, comment_id);
+		await validadeCommentBody.fields(post_id, comment_id);
 		
 		await Promise.all([
 			await deleteCommentService.execute({post_id, comment_id}),

@@ -1,16 +1,11 @@
-import { Comment } from '../../models/Comment';
-
-interface Iprops{
-  post_id: string;
-  comment_id: string;
-}
+import { commentRepository } from '../../repository/CommentRepository';
+import { CommentByIdType } from '../../shared/types/CommentTypes';
 
 class ListCommentByIdService {
-	async execute( { post_id, comment_id } : Iprops ) { 
-    
-		const comment = await Comment.findOne({post: post_id}).where('_id').equals(comment_id);    
+	async execute(comment_id: CommentByIdType) { 
+		const comment = commentRepository.getById(comment_id);
 		return comment;
 	}
 }
 
-export { ListCommentByIdService };
+export const listCommentByIdService = new ListCommentByIdService();
