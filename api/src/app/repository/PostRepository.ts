@@ -43,7 +43,17 @@ class PostRepository {
 	}
 
 	async deleteAll(profile_id: ProfileByIdType){
-		const query = Post.deleteMany({profile: profile_id});
+		const query = await Post.deleteMany({profile: profile_id});
+		return query;
+	}
+	
+	async likePost(post_id: PostByIdType, profile: ProfileType){
+		const query = await Post.findOneAndUpdate({_id: post_id}, {$addToSet: {likes: profile._id}}, { runValidators: true, new: true});
+		return query;
+	}
+
+	async unlikePost(post_id: PostByIdType, profile: ProfileType){
+		const query = await Post.findOneAndUpdate({_id: post_id}, {$pull: {likes: profile._id}}, { runValidators: true, new: true});
 		return query;
 	}
 }

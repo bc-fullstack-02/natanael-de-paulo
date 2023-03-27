@@ -1,24 +1,30 @@
 import {Request, Response} from 'express';
 import { Types } from 'mongoose';
-import { Post } from '../../models/Post';
-import { User } from '../../models/User';
-import { LikePostService } from '../../services/post/LikeAndUnlikePostService';
+import { likePostService } from '../../services/post/LikeAndUnlikePostService';
+import { listPostByIdService } from '../../services/post/ListPostByIdService';
+import { getUserByIdService } from '../../services/user/GetUserByIdService';
 
 class LikeAndUnlikePostController {
 	async handle(req: Request, res: Response){
-		const { post_id } = req.params;
-		const user_id = req.user_id;
-		const user = await User.findById(user_id).populate('profile');
-		const post = await Post.findById(post_id).populate('profile');
-		const likePostService = new LikePostService();
+		const getResponse = await Promise.all([
+			listPostByIdService.execute(req.params.post_id),
+			getUserByIdService.execute(req.user_id).then(user => user.profile)
+		]);
 
-		if(!post?.likes.includes(user?.profile._id as Types.ObjectId)) {
-			const postLiked = await likePostService.like({post, user});
-			await req.publish('comment-like', [post?.profile], postLiked);
+		const data = {
+			post: getResponse[0],
+			profile: getResponse[1]
+		}; 
+	
+		const { post, profile } = data;
+
+		if(!post?.likes.includes(profile._id as Types.ObjectId)) {
+			const postLiked = await likePostService.like(post._id, profile);
+			await req.publish('comment-like', [data.post?.profile], postLiked);
 			return res.json(postLiked);
 		}
 
-		const postUnliked = await likePostService.unlike({ post, user });
+		const postUnliked = await likePostService.unlike(post._id, profile);
 		return res.json(postUnliked);
 	}
 }
