@@ -1,4 +1,5 @@
 import { Post } from '../models/Post';
+import { CommentByIdType } from '../shared/types/CommentTypes';
 import { CreatePostType, DeletePostType, PostByIdType, PostType, UpdatePostType } from '../shared/types/PostTypes';
 import { ProfileByIdType, ProfileType } from '../shared/types/ProfileTypes';
 

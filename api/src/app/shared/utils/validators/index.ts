@@ -18,6 +18,12 @@ class Validate{
 		return true;
 	}
 
+	field(field: string) {
+		if (!field) {
+			throw new BadRequestException(`${field} is required`, 400);
+		}
+	}
+
 	async userIsRegistered(user: string){
 		const userAlreadyExists = await userRepository.findUser(user);
 
