@@ -1,10 +1,15 @@
-import { Post } from '../../models/Post';
+import { postRepository } from '../../repository/PostRepository';
+import { BadRequestException } from '../../shared/errors/BadRequestException';
+import { PostByIdType } from '../../shared/types/PostTypes';
 
 class ListPostByIdService {
-	async execute(id : string) { 
-		const post = await Post.find().where('_id').equals(id);
+	async execute(post_id: PostByIdType) { 
+		const post = await postRepository.getById(post_id);
+		if (!post) {
+			throw new BadRequestException('Post not found', 404);
+		}
 		return post;
 	}
 }
 
-export { ListPostByIdService };
+export const listPostByIdService = new ListPostByIdService();
