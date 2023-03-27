@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { listCommentByIdService } from '../../services/comment/ListCommentByIdService';
-import { validateParams } from '../../shared/utils/validators/ValidadeParams';
+import { validateParams } from '../../shared/utils/validators/ValidateParams';
 
 class ListCommentByIdController {
 	async handle(req: Request, res: Response){

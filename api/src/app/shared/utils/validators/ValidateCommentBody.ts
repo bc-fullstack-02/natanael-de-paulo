@@ -1,7 +1,7 @@
 import { validate } from '.';
 
-class ValidadeCommentBody{
-	create(description: string){
+class ValidateCommentBody{
+	field(description: string){
 		validate.field(description);
 	}
 
@@ -13,4 +13,4 @@ class ValidadeCommentBody{
 	}
 }
 
-export const validadeCommentBody = new ValidadeCommentBody();
+export const validateCommentBody = new ValidateCommentBody();

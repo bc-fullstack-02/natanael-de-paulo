@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createPostService } from '../../services/post/CreatePostService';
 import { getUserByIdService } from '../../services/user/GetUserByIdService';
 import { PostType } from '../../shared/types/PostTypes';
-import { validatePostBody } from '../../shared/utils/validators/ValidadePostBody';
+import { validatePostBody } from '../../shared/utils/validators/ValidatePostBody';
 
 class CreatePostController {
 	async handle(req: Request, res: Response) {

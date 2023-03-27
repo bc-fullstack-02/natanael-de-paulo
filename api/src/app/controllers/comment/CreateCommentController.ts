@@ -3,12 +3,12 @@ import { createCommentService } from '../../services/comment/CreateCommentServic
 import { listPostByIdService } from '../../services/post/ListPostByIdService';
 import { updateCommentsToPostService } from '../../services/comment/UpdateCommentsToPostService';
 import { getUserByIdService } from '../../services/user/GetUserByIdService';
-import { validadeCommentBody } from '../../shared/utils/validators/ValidadeCommentBody';
+import { validateCommentBody } from '../../shared/utils/validators/ValidateCommentBody';
 
 class CreateCommentController {
 	async handle(req: Request, res: Response){
 		const { description } = req.body;
-		validadeCommentBody.create(description);
+		validateCommentBody.field(description);
 
 		const data = await Promise.all([
 			getUserByIdService.execute(req.user_id).then(user => user.profile),

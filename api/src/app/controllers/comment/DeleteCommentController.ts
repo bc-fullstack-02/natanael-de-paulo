@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { deleteCommentService } from '../../services/comment/DeleteCommentService';
 import { updateCommentsToPostService } from '../../services/comment/UpdateCommentsToPostService';
-import { validadeCommentBody } from '../../shared/utils/validators/ValidadeCommentBody';
+import { validateCommentBody } from '../../shared/utils/validators/ValidateCommentBody';
 
 class DeleteCommentController {
 	async handle(req: Request, res: Response){
 		const { post_id, comment_id } = req.params;
-		await validadeCommentBody.fields(post_id, comment_id);
+		await validateCommentBody.fields(post_id, comment_id);
 		
 		await Promise.all([
 			await deleteCommentService.execute({post_id, comment_id}),
