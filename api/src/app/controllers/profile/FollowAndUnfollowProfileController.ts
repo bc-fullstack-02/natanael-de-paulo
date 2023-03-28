@@ -1,15 +1,18 @@
 import {Request, Response} from 'express';
-import { FollowAndUnfollowProfileService } from '../../services/profile/FollowAndUnfollowProfileService';
+import { followAndUnfollowProfileService } from '../../services/profile/FollowAndUnfollowProfileService';
+import { getProfileByIdService } from '../../services/profile/GetProfileByIdService';
+import { getUserByIdService } from '../../services/user/GetUserByIdService';
 
 
 class FollowAndUnfollowProfileController {
 	async handle(req: Request, res: Response){
-		const user_id = req.user_id;
-		const { profile_id } = req.params;
+		const data = await Promise.all([
+			getProfileByIdService.execute(req.params.profile_id),
+			getUserByIdService.execute(req.user_id).then(user => user.profile)
+		]);
 
-		const followAndUnfollowProfileService = new FollowAndUnfollowProfileService();
-		const followProfile = await followAndUnfollowProfileService.execute({user_id, profile_id});
-
+		const [ handleProfile, profileLogged ] = data;
+		const followProfile = await followAndUnfollowProfileService.execute(handleProfile, profileLogged);
 		res.json(followProfile);
 	}
 }
