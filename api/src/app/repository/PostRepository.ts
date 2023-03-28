@@ -1,5 +1,4 @@
 import { Post } from '../models/Post';
-import { CommentByIdType } from '../shared/types/CommentTypes';
 import { CreatePostType, DeletePostType, PostByIdType, PostType, UpdatePostType } from '../shared/types/PostTypes';
 import { ProfileByIdType, ProfileType } from '../shared/types/ProfileTypes';
 
@@ -14,8 +13,13 @@ class PostRepository {
 		return query;
 	}
 
+	async getFeed(profile: ProfileType){
+		const query: PostType[] = await Post.find({profile: { $in:profile?.following}});
+		return query;
+	}
+
 	async create({title, description, profile, imagePath}: CreatePostType){
-		const query = await Post.create({
+		const query: PostType = await Post.create({
 			profile: profile._id,
 			title: title,
 			description: description,

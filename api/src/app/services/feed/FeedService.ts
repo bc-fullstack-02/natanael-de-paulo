@@ -1,13 +1,11 @@
-import { Post } from '../../models/Post';
-import { Profile } from '../../models/Profile';
+import { postRepository } from '../../repository/PostRepository';
+import { ProfileType } from '../../shared/types/ProfileTypes';
 
 class FeedService {
-	async execute(user_id: string){
-		const currentProfile  = await Profile.findOne({}).where('user').equals(user_id);
-		const friendsPosts  = await Post.find({profile: { $in:currentProfile?.following}}).populate('profile');
-		
-		return friendsPosts;
+	async execute(profile: ProfileType){
+		const postsFriends = postRepository.getFeed(profile);
+		return postsFriends;
 	}
 }
 
-export  { FeedService };
+export const feedService = new FeedService();
