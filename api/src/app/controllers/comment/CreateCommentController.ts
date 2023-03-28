@@ -19,7 +19,7 @@ class CreateCommentController {
 		
 		const newComment = await createCommentService.execute({post, profile, description});
 		await updateCommentsToPostService.add(post._id, newComment._id);
-		await req.publish('comment', [post.profile], newComment);
+		await req.publish('comment_pub', [post.profile], newComment);
 
 		res.status(201).json(newComment);
 	}

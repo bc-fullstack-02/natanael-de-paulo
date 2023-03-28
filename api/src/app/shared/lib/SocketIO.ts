@@ -1,7 +1,7 @@
 import { NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { Socket } from 'socket.io';
-import { liveData } from '../../..';
+// import { liveData } from '../../..';
 import { User } from '../../models/User';
 // import {verify} from 'jsonwebtoken';
 // import { User } from '../../models/User';

@@ -17,13 +17,19 @@
               }
           },
           "exchanges": [
-              "post_ex"
+              "post_ex",
+              "comment_ex",
+              "like-unlike_ex"
           ],
           "queues": [
-              "post_queue"
+              "post_queue",
+              "comment_queue",
+              "like-unlike_queue"
           ],
           "bindings": [
-              "post_ex[p] -> post_queue"
+              "post_ex[p] -> post_queue",
+              "comment_ex[c] -> comment_queue",
+              "like-unlike_ex[l] -> like-unlike_queue"
           ],
           "publications": {
               "post_pub": {
@@ -32,11 +38,31 @@
                   "options": {
                       "persistent": false
                   }
+              },
+              "comment_pub": {
+                "exchange": "comment_ex",
+                "routingKey": "c",
+                "options": {
+                    "persistent": false
+                }
+              },
+              "like-unlike_pub": {
+                "exchange": "like-unlike_ex",
+                "routingKey": "l",
+                "options": {
+                    "persistent": false
+                }
               }
           },
           "subscriptions": {
               "post_sub": {
                   "queue": "post_queue"
+              },
+              "comment_sub": {
+                "queue": "comment_queue"
+              },
+              "like-unlike_sub": {
+                "queue": "like-unlike_queue"
               }
           }
       }

@@ -1,10 +1,9 @@
 import { app } from './app';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import { sub } from './app/shared/lib/pubsub';
+import MessageBroker from './app/shared/lib/messageBroker';
 import jwt from 'jsonwebtoken';
-import { Profile } from './app/models/Profile';
-import { SubscriptionSession } from 'rascal';
+import { AckOrNack, SubscriptionSession } from 'rascal';
 import { User } from './app/models/User';
 const httpServer = createServer(app);
 
@@ -52,22 +51,28 @@ liveData.on('connection', (socket) => {
 	socket.emit('connect_profile', (socket as any).profile);
 });
 
-
-
-sub()
-	.then((sub) => {
-		sub.on('message', (message, content, ackOrNack) => {
+MessageBroker.sub().then((subscriptions) => {
+	(subscriptions as SubscriptionSession[]).forEach((subscription) => {
+		subscription.on('message', (message:any, content: any, ackOrNack: AckOrNack) => {
 			ackOrNack();
-			Object.entries(Object.fromEntries(liveData.sockets))
-				.filter(([, v]) =>
-					content.keys.includes((v as any).profile._id.toString())
-				)
-				.map(([k, v]) => {
-					return v.emit(content.type, content.payload);
-				});
-		}) as SubscriptionSession;
-	}) 
-	.catch(console.error);
+		});
+	});
+});
+
+// sub()
+// 	.then((sub: any) => {
+// 		sub.on('message', (message:any, content: any, ackOrNack: AckOrNack) => {
+// 			ackOrNack();
+// 			Object.entries(Object.fromEntries(liveData.sockets))
+// 				.filter(([, v]) =>
+// 					content.keys.includes((v as any).profile._id.toString())
+// 				)
+// 				.map(([k, v]) => {
+// 					return v.emit(content.type, content.payload);
+// 				});
+// 		}) as Promise<SubscriptionSession>;
+// 	}) 
+// 	.catch(console.error);
 
 
 const port = 3001;

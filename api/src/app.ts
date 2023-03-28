@@ -10,7 +10,7 @@ import { ConnectDb } from './app/database';
 import { AppError } from './app/shared/middlewares/AppError';
 
 import swaggerDosc from './swagger.json';
-import { pub } from './app/shared/lib/pubsub';
+import MessageBroker from './app/shared/lib/messageBroker';
 const app = express();
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.use(express.json());
 const urlencodedMiddleware =  express.urlencoded({extended: true});
 app.use((req, res, next) => (/^multipart\//i.test(String(req.get('Content-Type')))) ? next() : urlencodedMiddleware(req, res, next));
 
-app.use(pub);
+app.use(MessageBroker.pub);
 
 app.use('/v1', routes);
 app.use(AppError);
