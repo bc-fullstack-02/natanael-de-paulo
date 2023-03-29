@@ -16,7 +16,7 @@ class CreatePostController {
 			profile, 
 			imagePath
 		});
-		await req.publish('post', profile?.followers, newPost);
+		await req.publish('post_pub', profile?.followers, newPost);
 		res.status(201).json(newPost);
 	}
 }
