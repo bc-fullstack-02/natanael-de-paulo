@@ -56,4 +56,4 @@ class MessageBroker{
 	}
 }
 
-export default new MessageBroker();
+export const messageBroker = new MessageBroker();
