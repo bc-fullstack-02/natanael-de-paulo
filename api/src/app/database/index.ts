@@ -8,7 +8,7 @@ export const ConnectDb = mongoose.connect(
 	}`,
 	// https://mongoosejs.com/docs/connections.html#options
 	{
-		serverSelectionTimeoutMS: !process.env.NODE_ENV ? 1000 : 30000,
+		serverSelectionTimeoutMS: !process.env.NODE_ENV ? 2000 : 30000,
 	} // Keep trying to send operations for 5 seconds
 );
 
