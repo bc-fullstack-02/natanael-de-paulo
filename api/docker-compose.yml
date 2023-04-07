@@ -40,8 +40,6 @@ services:
     container_name: 'mongodb'
     ports:
       - 27017:27017
-    environment:
-    - MONGO_URL: mongodb://localhost:27017/mydb
     networks:
       - mynet
 
@@ -71,7 +69,7 @@ services:
         PORT: 4000
         MONGO_URL: mongodb://mongodb:27017/mydb
         JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
-        # AMQP_URL: amqp://guest:guest@rabbitmq:5672
+        AMQP_URL: amqp://guest:guest@rabbitmq:5672
         BUCKET_HOST: http://localhost:9000/
         BUCKET_ENDPOINT: http://minio:9000/
         BUCKET_ACCESS_KEY: ROOTUSER
