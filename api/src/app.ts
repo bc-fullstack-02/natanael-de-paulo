@@ -14,6 +14,13 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDosc from './swagger.json';
 import { messageBroker } from './app/shared/lib/messageBroker';
 import { socketAuth } from './app/shared/middlewares/socketAuth';
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // limit each IP to 100 requests per windowMs
+	message: 'Too many requests, please try again later',
+});
 
 const app = express();
 dotenv.config();
@@ -29,6 +36,7 @@ app.use(cors());
 // app.use(helmet());
 app.use(morgan('tiny'));
 app.use(messageBroker.pub);
+app.use(limiter);
 
 
 const urlencodedMiddleware =  express.urlencoded({extended: true});

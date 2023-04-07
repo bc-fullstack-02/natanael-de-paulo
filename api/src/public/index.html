@@ -39,10 +39,10 @@
       socket.on('post_pub', data => {
         msgBox.innerHTML += 'post: ' + JSON.stringify(data) + '<br />'
       })
-      socket.on('post-like', data => {
+      socket.on('like-unlike_pub', data => {
         msgBox.innerHTML += 'post-like: ' + JSON.stringify(data) + '<br />'
       })
-      socket.on('comment', data => {
+      socket.on('comment_pub', data => {
         msgBox.innerHTML += 'comment: ' + JSON.stringify(data) + '<br />'
       })
       socket.on('comment-like', data => {

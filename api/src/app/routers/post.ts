@@ -6,18 +6,18 @@ import { listPostController } from '../controllers/post/ListPostController';
 import { listPostByIdController } from '../controllers/post/ListPostByIdController';
 import { updatePostController } from '../controllers/post/UpdatePostController';
 import { likeAndUnlikePostController} from '../controllers/post/LikeAndUnlikePostController';
-import multerConfig from '../config/multer';
-import multer from 'multer';
-// import { upload } from '../shared/middlewares/multerUploadMiddleware';
+// import multerConfig from '../config/multer';
+// import multer from 'multer';
+import { upload, uploadImageInMinioIO} from '../shared/lib/minioIO/multerUploadMiddleware';
 
 export const PostRoutes = Router();
-const upload = multer(multerConfig);
+// const upload = multer(multerConfig);
 
 
 PostRoutes
 	.route('/')
 	.get(listPostController.handle)
-	.post(upload.single('image'), createPostController.handle);
+	.post(upload.single('file'), uploadImageInMinioIO, createPostController.handle);
 
 PostRoutes
 	.route('/:post_id')
@@ -29,5 +29,3 @@ PostRoutes
 	.route('/:post_id/like')
 	.post(likeAndUnlikePostController.handle);
 	
-//{id}/like
-//Criar rota para dar like em um determinado post

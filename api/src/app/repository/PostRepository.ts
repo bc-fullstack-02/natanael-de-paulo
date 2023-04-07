@@ -18,13 +18,13 @@ class PostRepository {
 		return query;
 	}
 
-	async create({title, description, profile, imagePath}: CreatePostType){
+	async create({title, description, profile, imageUrl, image}: CreatePostType){
 		const query: PostType = await Post.create({
 			profile: profile._id,
-			title: title,
-			description: description,
-			imagePath: imagePath? imagePath: undefined,
-			image: imagePath? true : false
+			title,
+			description,
+			imagePath: imageUrl,
+			image
 		});
 
 		return query;
