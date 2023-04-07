@@ -1,35 +1,11 @@
-# FROM node:16-alpine as base
-# WORKDIR /src
-# # COPY package*.json ./
+FROM node:18.15.0-alpine as base
 
-# COPY . .
-# RUN npm cache clean rm -rf node_modules
+WORKDIR /app
 
-# FROM base as dev
+COPY . .
 
-# ENV NODE_ENV=development
+ENV NODE_ENV=development
+ENV PORT=3001
 
-# # RUN npm cache clean --force && npm install'
-# RUN npm install
-# RUN npm uninstall bcrypt 
-# RUN npm install bcrypt
-
-# # ENTRYPOINT ["npm", "dev"]
-
-# EXPOSE 4000
-
-
-# FROM node:16-alpine as base
-
-# WORKDIR /src
-
-# COPY package*.json ./
-# ENV NODE_ENV=development
-# RUN npm install
-# RUN npm uninstall bcrypt 
-# RUN npm install bcrypt
-
-# #COPIA TUDO PRO WORKDIR
-# COPY . . 
-
-# CMD ["npm", "start"]
+RUN npm install
+CMD ["npm", "dev"]
