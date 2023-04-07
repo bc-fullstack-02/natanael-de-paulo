@@ -18,7 +18,8 @@ export type CreatePostType = {
 	title: string;
 	description: string;
 	profile: ProfileType;
-	imagePath: string;
+	imageUrl: string;
+	image: boolean;
 }
 
 export type DeletePostType = {
