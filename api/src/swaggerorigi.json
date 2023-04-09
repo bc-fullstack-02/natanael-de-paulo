@@ -13,6 +13,7 @@
     {
       "url": "http://localhost:3001/v1",
       "description": "API de teste"
+      
     },
     {
       "schemes": [
@@ -20,7 +21,8 @@
         "http"
       ]
     }
-  ], 
+  ],
+  
   "paths": {
     "/security/login": { 
       "post": {
@@ -36,8 +38,8 @@
               "examples": {
                 "user": {
                   "value": {
-                    "user": "Usuario",
-                    "password": "123"
+                    "user": "User",
+                    "password": "1234"
                   }
                 }
               }
@@ -45,12 +47,13 @@
           }
         },
         "responses": {}
+
       }
     },
     "/security/register": {
       "post": {
         "summary": "Cadastrar usuario",
-        "description": "Rota responsável por cadastrar um usuário, encriptografar a senha e salvar este usuario no banco de dados com a senha encriptografada.",
+        "description": "Rota responsavel por cadastrar  usuario, encriptografar a senha e salvar este usuario no banco de dados com a senha encriptografada.",
         "tags": ["Security"],
         "requestBody": {
           "content": {
@@ -61,19 +64,15 @@
               "examples": {
                 "user": {
                   "value": {
-                    "user": "Usuario",
-                    "email": "usuario@email.com",
-                    "password": "123",
-                    "profile": {
-                      "name": "Nome do perfil"
-                    }
+                    "name": "Name do perfil",
+                    "user": "Nome de Usuario",
+                    "password": "1234"
                   }
                 }
               }
             }
           }
-        },
-        "responses": {}
+        }
       }
     },
     "/posts": {
@@ -102,12 +101,15 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "auth": [
+              "write:pets",
+              "read:pets"
+            ]
           }
         ]
       },
       "post": {
-        "summary": "Criar de post",
+        "summary": "Criação de post",
         "description": "Essa rota será responsavel por criar um novo post",
         "tags": ["Posts"],
         "operationId": "criarNovoPost",
@@ -126,33 +128,25 @@
                   }
                 }
               }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "required": true
-                  },
-                  "description": {
-                    "type": "string",
-                    "required": true
-                  },
-                  "file": {
-                    "type": "file"
-                  }
-                }
-              }
             }
           }
         },
-        "responses": {},
-        "security": [
-          {
-            "bearerAuth": []
+        "responses": {
+          "201" : {
+            "description": "post criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Post"
+                  
+                }
+                
+              }
+            }
           }
-        ]
+          
+        }
       }
     },
     "/posts/{id}": {
@@ -180,15 +174,10 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       },
       "delete": {
-        "summary":"Deletar post",
+        "summary":"Deletar post pelo id",
         "description" : "Deletar post pelo id",
         "tags":["Posts"],
         "parameters": [
@@ -198,73 +187,15 @@
             "description": "Post pelo id",
             "required": true
           }
-        ],
-        "responses": {},
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
-      "put":{
-        "summary": "Atualizar post",
-        "description": "Essa rota será responsavel por atualizar um post existente",
-        "tags": ["Posts"],
-        "operationId": "atualizarNovoPost",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Post pelo id",
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Post"
-              },
-              "examples": {
-                "post":{
-                  "summary": "exemplo de post",
-                  "value": {
-                    "title": "TestUpdatePostSwaggerTitle",
-                    "description": "TestUpdatePostSwaggerDescription"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {},
-        "security": [
-          {
-            "bearerAuth": []
-          }
         ]
       }
     },
-    "/posts/{id}/like": {
+    "/post/{id/like}":{
       "post": {
         "summary": "Curtir post",
         "description": "Essa rota será responsavel por dar like e deslike em um determinado post",
         "tags": ["Posts"],
-        "operationId": "CurtirNovoPost",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id do post",
-            "required": true
-          }
-        ],
-        "responses": {},
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "operationId": "CurtirNovoPost"
       }
     }
   },
@@ -280,11 +211,6 @@
           "description": {
             "type": "string",
             "required": true
-          },
-          "image": {
-            "type": "boolean"          },
-          "imagePath": {
-            "type": "string"
           },
           "profile": {
             "type": "object",
@@ -311,18 +237,13 @@
         "properties": {
           "user": {
             "type": "string",
-            "description": "Digite o usuario",
+            "description": "Digite o usuario para logar",
             "required": true
           },
           "password": {
             "type": "string",
-            "description": "Digite a senha",
+            "description": "Digite a senha para logar",
             "required": true
-          },
-          "email" : {
-            "type": "string",
-            "description": "Digite seu email",
-            "minLength": 2
           },
           "profile": {
             "type": "object",
@@ -336,6 +257,10 @@
           "name": {
             "type": "string",
             "required": true,
+            "minLength": 2
+          },
+          "email": {
+            "type": "string",
             "minLength": 2
           },
           "image": {
@@ -391,17 +316,50 @@
             }
           }
         }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        },
+        "api_key": {
+          "type": "apiKey",
+          "name": "api_key",
+          "in": "header"
+        },
+        "auth": {
+          "type": "oauth2",
+          "authorizationUrl": "https://http://localhost:3001/api-docs/#/security/login",
+          "flow": "implicit"
+        }
       }
+    }
+  },
+  "security": {
+    "bearerAuth": [], 
+    "api_key": [],
+    "auth": []
+  },
+  "securityDefinitions": {
+    "bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description":"Insira o token JWT com o Bearer. Por exemplo: `Bearer: abcde12345 `."
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description":"Insira o token JWT"
+    "auto": {
+      "type": "oauth2",
+      "name": "AuthorizationOauth",
+      "flows": {
+        "implicit": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "scopes": {
+              "write":"pets: modify pets in your account",
+              "read:pets": "read your pets"
+            }
+        }
       }
     }
   }
 }
-
-

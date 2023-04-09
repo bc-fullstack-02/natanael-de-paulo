@@ -35,17 +35,14 @@ app.use(express.json());
 app.use(cors());
 // app.use(helmet());
 app.use(morgan('tiny'));
-app.use(messageBroker.pub);
 app.use(limiter);
-
 
 const urlencodedMiddleware =  express.urlencoded({extended: true});
 app.use((req, res, next) => (/^multipart\//i.test(String(req.get('Content-Type')))) ? next() : urlencodedMiddleware(req, res, next));
 
-
-app.use(AppError);
+app.use(messageBroker.pub);
 app.use('/v1', routes);
-
+app.use(AppError);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/terms', (req, res) => {
@@ -63,7 +60,6 @@ const io = new Server(httpServer, {
 });
 
 const liveData = io.of('/v1');
-
 liveData.use(socketAuth);
 
 export { httpServer, liveData };
