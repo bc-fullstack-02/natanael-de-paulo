@@ -210,7 +210,7 @@
         "summary": "Atualizar post",
         "description": "Essa rota será responsavel por atualizar um post existente",
         "tags": ["Posts"],
-        "operationId": "atualizarNovoPost",
+        "operationId": "atualizarPost",
         "parameters": [
           {
             "name": "postId",
@@ -250,7 +250,7 @@
         "summary": "Curtir post",
         "description": "Essa rota será responsavel por dar like e deslike em um determinado post",
         "tags": ["Posts"],
-        "operationId": "CurtirNovoPost",
+        "operationId": "CurtirPost",
         "parameters": [
           {
             "name": "postId",
@@ -272,7 +272,7 @@
         "summary": "Listar comentários",
         "description": "Essa rota será responsavel por listar os comentários",
         "tags": ["Comments"],
-        "operationId":"listarCommentarios",
+        "operationId":"listarComentarios",
         "parameters": [
           {
             "name": "postId",
@@ -331,6 +331,105 @@
         "summary":"Listar comentário",
         "description" : "Buscar comentário pelo id",
         "tags":["Comments"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comentário pelo id",
+            "required": true
+          }
+
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Atualizar comentario",
+        "description": "Essa rota será responsavel por atualizar um comentario existente",
+        "tags": ["Comments"],
+        "operationId": "atualizarComentario",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comentário pelo id",
+            "required": true
+          }
+
+        ],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              },
+              "examples": {
+                "post":{
+                  "summary": "exemplo de comentário",
+                  "value": {
+                    "description": "TestUpdateCommentSwaggerDescription"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary":"Deletar comentário",
+        "description" : "Deletar comentário pelo id",
+        "tags":["Comments"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comentário pelo id",
+            "required": true
+          }
+
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/{postId}/comments/{commentId}/like": {
+      "post": {
+        "summary": "Curtir comentário",
+        "description": "Essa rota será responsavel por dar like e deslike em um determinado comentário",
+        "tags": ["Comments"],
+        "operationId": "CurtirComentario",
         "parameters": [
           {
             "name": "postId",

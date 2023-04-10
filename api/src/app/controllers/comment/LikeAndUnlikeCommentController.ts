@@ -15,7 +15,7 @@ class LikeAndUnlikeCommentController {
 				
 		if(!comment?.likes.includes(profile._id as Types.ObjectId)){
 			const commentLiked = await likeAndUnlikeCommentService.like(comment, profile);
-			await req.publish('comment-like', [comment?.profile], commentLiked);
+			await req.publish('like-unlike_pub', [comment?.profile], commentLiked);
 			return res.json(commentLiked);
 		}
 
