@@ -1,11 +1,11 @@
-FROM node:18.15.0-alpine as base
+# FROM node:18.15.0-alpine as base
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY . .
+# COPY . .
 
-ENV NODE_ENV=development
-ENV PORT=3001
+# ENV NODE_ENV=development
+# ENV PORT=3001
 
-RUN npm install
-CMD ["npm", "dev"]
+# RUN npm install
+# CMD ["npm", "dev"]
