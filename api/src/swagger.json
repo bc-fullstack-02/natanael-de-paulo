@@ -76,6 +76,42 @@
         "responses": {}
       }
     },
+    "/profiles": {
+      "get": {
+        "summary": "Listar perfis",
+        "description": "Essa rota será responsavel por listar os perfis",
+        "tags": ["Profiles"],
+        "operationId": "listarPerfis",
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/profiles/{profileId}/follow": {
+      "post": {
+        "summary": "Seguir Perfil",
+        "description": "Essa rota será responsável seguir ou deixar de seguir um perfil",
+        "tags": ["Profiles"],
+        "operationId": "seguirPerfil",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "Post pelo id",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/posts": {
       "get":{
         "summary": "Listar posts",
