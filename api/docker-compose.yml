@@ -3,6 +3,7 @@ services:
 
   minio:
     image: bitnami/minio
+    container_name: minio
     ports:
       - '9001:9001'
       - '9000:9000'
@@ -12,7 +13,7 @@ services:
       MINIO_SERVER_HOST: localhost
       MINIO_SCHEME: http
       MINIO_API_CORS_ALLOW_ORIGIN: "*"
-      BUCKET_HOST: http://localhost:9000/
+      BUCKET_HOST: http://localhost:9001/
       BUCKET_ENDPOINT: http://minio:9000/
       BUCKET_ACCESS_KEY: ROOTUSER
       BUCKET_SECRET_KEY: ROOTPASSWORD123
@@ -54,30 +55,33 @@ services:
     environment:
     - AMQP_URL=amqp://guest:guest@rabbitmq:5672
 
-  # backend:
-  #     restart: always
-  #     build:
-  #       context: ./
-  #     volumes:
-  #       - .:/src
-  #     depends_on:
-  #       - mongodb
-  #       - rabbitmq
-  #       - minio
-  #     environment:
-  #       PORT: 4000
-  #       MONGO_URL: mongodb://mongodb:27017/mydb
-  #       JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
-  #       # AMQP_URL: amqp://guest:guest@rabbitmq:5672
-  #       BUCKET_HOST: http://localhost:9000/
-  #       BUCKET_ENDPOINT: http://minio:9000/
-  #       BUCKET_ACCESS_KEY: ROOTUSER
-  #       BUCKET_SECRET_KEY: ROOTPASSWORD123
-  #     ports:
-  #         - "4000:4000"
-  #     networks:
-  #       - mynet
-  #     # command: sh -c "npm run dev"
+  backend:
+      container_name: 'API'
+      restart: always
+      build:
+        context: ./
+      volumes:
+        - .:/home/node/server
+      depends_on:
+        - mongodb
+        - rabbitmq
+        - minio
+      environment:
+        PORT: 3001
+        MONGO_URL: mongodb://mongodb:27017/mydb
+        JWT_SECRET: f99e1b684fa6cd9d5d4d50551d330673
+        AMQP_URL: amqp://guest:guest@rabbitmq:5672
+        MINIO_ROOT_USER: ROOTUSER
+        MINIO_ROOT_PASSWORD: ROOTPASSWORD123
+        BUCKET_HOST: http://localhost:9000/
+        BUCKET_ENDPOINT: http://minio:9000/
+        BUCKET_ACCESS_KEY: ROOTUSER
+        BUCKET_SECRET_KEY: ROOTPASSWORD123
+      ports:
+          - "3001:3001"
+      networks:
+        - mynet
+      command: sh -c "npm run dev"
 
 networks:
   mynet:

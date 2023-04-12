@@ -17,11 +17,9 @@ messageBroker.sub().then((subscriptions) => {
 	});
 });
 
-const port = 3001;
-
-httpServer.listen(process.env.PORT || port, () => {
+httpServer.listen(process.env.PORT, () => {
 	console.log(
-		`🚀 Server is running on http://localhost:${process.env.PORT || port}`
+		`🚀 Server is running on http://localhost:${process.env.PORT}`
 	);
 	console.log('ENV VARIABLES:');
 	console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
