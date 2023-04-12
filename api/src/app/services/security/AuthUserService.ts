@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { userRepository } from '../../repository/UserRepository';
 import { BadRequestException } from '../../shared/errors/BadRequestException';
