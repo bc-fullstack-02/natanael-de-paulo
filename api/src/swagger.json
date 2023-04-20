@@ -1,19 +1,26 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "API para uma rede social",
-    "description": "Essa API tem como objetivo a manipulação de eventos de uma rede social",
+    "title": "API for a social network",
+    "description": "This API seeks to show some routes and events that exist in a basic social network",
     "termsOfService": "http://localhost:3001/terms",
     "contact": {
-      "email": "natanaeldepaulo123@gmail.com"
+      "email": "carlosnatanael.p.j@gmail.com"
     },
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:3001/v1",
-      "description": "API de teste"
-      
+      "url": "http://localhost:{port}/{basePath}",
+      "description": "The development API server",
+      "variables": {
+        "port": {
+          "default": "3001"
+        },
+        "basePath": {
+          "default": "v1"
+        }
+      }
     },
     {
       "schemes": [
@@ -21,13 +28,12 @@
         "http"
       ]
     }
-  ],
-  
+  ], 
   "paths": {
     "/security/login": { 
       "post": {
-        "summary": "Logar usuario",
-        "description": "Rota responsavel por verificar se as credencias de login estão de acordo com o que está armazando no banco de dados. Apos confirmar usuario existente, irá gerar o token de acesso.",
+        "summary": "Login user",
+        "description": "Route responsible for verifying that the login credentials are in accordance with what is stored in the database. After confirming the existing user, it will generate the access token.",
         "tags": ["Security"],
         "requestBody": {
           "content": {
@@ -36,10 +42,10 @@
                 "$ref": "#/components/schemas/User"
               },
               "examples": {
-                "user": {
+                "login_user": {
                   "value": {
-                    "user": "User",
-                    "password": "1234"
+                    "user": "Usuario",
+                    "password": "123"
                   }
                 }
               }
@@ -47,13 +53,12 @@
           }
         },
         "responses": {}
-
       }
     },
     "/security/register": {
       "post": {
-        "summary": "Cadastrar usuario",
-        "description": "Rota responsavel por cadastrar  usuario, encriptografar a senha e salvar este usuario no banco de dados com a senha encriptografada.",
+        "summary": "Register user",
+        "description": "Route responsible for registering a user, encrypting the password and saving the credentials in the database with the encrypted password.",
         "tags": ["Security"],
         "requestBody": {
           "content": {
@@ -62,57 +67,77 @@
                 "$ref": "#/components/schemas/User"
               },
               "examples": {
-                "user": {
+                "register_user": {
                   "value": {
-                    "name": "Name do perfil",
-                    "user": "Nome de Usuario",
-                    "password": "1234"
+                    "user": "Usuario",
+                    "email": "usuario@email.com",
+                    "password": "123",
+                    "profile": {
+                      "name": "Nome do perfil"
+                    }
                   }
                 }
               }
             }
           }
-        }
+        },
+        "responses": {}
+      }
+    },
+    "/profiles": {
+      "get": {
+        "summary": "List profiles",
+        "description": "Route responsible for listing the existing profiles in the application.",
+        "tags": ["Profiles"],
+        "operationId": "listProfiles",
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/profiles/{profileId}/follow": {
+      "post": {
+        "summary": "Follow or unfollow Profile",
+        "description": "This route will be responsible for following or unfollowing a profile.",
+        "tags": ["Profiles"],
+        "operationId": "followProfile",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "post by id",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/posts": {
       "get":{
-        "summary": "Listar posts",
-        "description": "Essa rota será responsavel por listar os posts",
+        "summary": "List posts",
+        "description": "List all profile created posts.",
         "tags": ["Posts"],
-        "operationId":"listarPosts",
-        "responses": {
-          "200" : {
-            "description": "OK",
-            "content": {
-              "header": {
-                "Authorization": "Bearer "
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Post"
-                  
-                }
-                
-              }
-            }
-          }
-        },
+        "operationId":"listPosts",
+        "responses": {},
         "security": [
           {
-            "auth": [
-              "write:pets",
-              "read:pets"
-            ]
+            "bearerAuth": []
           }
         ]
       },
       "post": {
-        "summary": "Criação de post",
-        "description": "Essa rota será responsavel por criar um novo post",
+        "summary": "Create a new post",
+        "description": "This route will be responsible for creating a new post.",
         "tags": ["Posts"],
-        "operationId": "criarNovoPost",
+        "operationId": "createPost",
         "requestBody": {
           "content": {
             "application/json": {
@@ -120,45 +145,53 @@
                 "$ref": "#/components/schemas/Post"
               },
               "examples": {
-                "post":{
-                  "summary": "exemplo de post",
+                "new_post":{
+                  "summary": "post exemple",
                   "value": {
-                    "title": "TestPostSwaggerTitle",
-                    "description": "TestPostSwaggerDescription"
+                    "title": "PostSwaggerTitle",
+                    "description": "PostSwaggerDescription"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "description": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "file": {
+                    "type": "file"
                   }
                 }
               }
             }
           }
         },
-        "responses": {
-          "201" : {
-            "description": "post criado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Post"
-                  
-                }
-                
-              }
-            }
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
           }
-          
-        }
+        ]
       }
     },
-    "/posts/{id}": {
+    "/posts/{postId}": {
       "get": {
-        "summary":"Listar post pelo id",
-        "description" : "Buscar post pelo id",
+        "summary":"List post by id",
+        "description" : "Search the post using the id parameter",
         "tags":["Posts"],
         "parameters": [
           {
-            "name": "id",
+            "name": "postById",
             "in": "path",
-            "description": "Post pelo id",
+            "description": "Post by id",
             "required": true
           }
         ],
@@ -174,28 +207,277 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
-        "summary":"Deletar post pelo id",
-        "description" : "Deletar post pelo id",
+        "summary":"Delete post",
+        "description" : "Delete post via id parameter.",
         "tags":["Posts"],
         "parameters": [
           {
-            "name": "id",
+            "name": "postId",
             "in": "path",
-            "description": "Post pelo id",
+            "description": "Delete post by id",
             "required": true
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put":{
+        "summary": "Update post",
+        "description": "Route responsible for updating information of an existing post.",
+        "tags": ["Posts"],
+        "operationId": "updatePost",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Update post by id",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              },
+              "examples": {
+                "update_post":{
+                  "summary": "Example of data to be updated from a post",
+                  "value": {
+                    "title": "TestUpdatePostSwaggerTitle",
+                    "description": "TestUpdatePostSwaggerDescription"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
           }
         ]
       }
     },
-    "/post/{id/like}":{
+    "/posts/{postId}/like": {
       "post": {
-        "summary": "Curtir post",
-        "description": "Essa rota será responsavel por dar like e deslike em um determinado post",
+        "summary": "Like or Unlike post",
+        "description": "This route will be responsible for giving likes and unlikes to a certain post.",
         "tags": ["Posts"],
-        "operationId": "CurtirNovoPost"
+        "operationId": "likePost",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Like or unlike post by id",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/{postId}/comments": {
+      "get": {
+        "summary": "List comments",
+        "description": "Route responsible for fetching all comments from a profile on a given post.",
+        "tags": ["Comments"],
+        "operationId":"listComments",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "List comments by post id",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create comment",
+        "description": "This route will be responsible for creating a new comment on a post.",
+        "tags": ["Comments"],
+        "operationId": "createComment",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post by id",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              },
+              "examples": {
+                "comment_post":{
+                  "summary": "comment example",
+                  "value": {
+                    "description": "TestCommentSwaggerDescription"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "get": {
+        "summary":"List comment",
+        "description" : "Search for a comment by post id and comment id.",
+        "tags":["Comments"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post by id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment by id",
+            "required": true
+          }
+
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update comment",
+        "description": "This route will be responsible for updating an existing comment on a post.",
+        "tags": ["Comments"],
+        "operationId": "updateComment",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post by id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment by id",
+            "required": true
+          }
+
+        ],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              },
+              "examples": {
+                "post":{
+                  "summary": "Comment example",
+                  "value": {
+                    "description": "Update comment swagger description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary":"Delete comment",
+        "description" : "Delete comment via id parameter.",
+        "tags":["Comments"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post by id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment by id",
+            "required": true
+          }
+
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/{postId}/comments/{commentId}/like": {
+      "post": {
+        "summary": "Like or unlike comment",
+        "description": "This route will be responsible for liking or disliking a given comment",
+        "tags": ["Comments"],
+        "operationId": "LikeComment",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post by id",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment by id",
+            "required": true
+          }
+
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
@@ -211,6 +493,11 @@
           "description": {
             "type": "string",
             "required": true
+          },
+          "image": {
+            "type": "boolean"          },
+          "imagePath": {
+            "type": "string"
           },
           "profile": {
             "type": "object",
@@ -237,13 +524,18 @@
         "properties": {
           "user": {
             "type": "string",
-            "description": "Digite o usuario para logar",
+            "description": "Enter the user",
             "required": true
           },
           "password": {
             "type": "string",
-            "description": "Digite a senha para logar",
+            "description": "Type the password",
             "required": true
+          },
+          "email" : {
+            "type": "string",
+            "description": "Type your e-mail",
+            "minLength": 2
           },
           "profile": {
             "type": "object",
@@ -257,10 +549,6 @@
           "name": {
             "type": "string",
             "required": true,
-            "minLength": 2
-          },
-          "email": {
-            "type": "string",
             "minLength": 2
           },
           "image": {
@@ -316,37 +604,17 @@
             }
           }
         }
-      },
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        },
-        "api_key": {
-          "type": "apiKey",
-          "name": "api_key",
-          "in": "header"
-        },
-        "auth": {
-          "type": "oauth2",
-          "authorizationUrl": "https://http://localhost:3001/api-docs/#/security/login",
-          "flow": "implicit"
-        }
       }
-    }
-  },
-  "security": {
-    "bearerAuth": [], 
-    "api_key": [],
-    "auth": []
-  },
-  "securityDefinitions": {
-    "bearer": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
-        "description":"Insira o token JWT com o Bearer. Por exemplo: `Bearer: abcde12345 `."
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description":"Insira o token JWT"
+      }
     }
   }
 }
+
+

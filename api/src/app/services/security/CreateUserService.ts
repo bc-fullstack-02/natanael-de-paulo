@@ -1,6 +1,6 @@
 import { UserType } from '../../shared/types/UserTypes';
 import { userRepository } from '../../repository/UserRepository';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 class CreateUserService {
 	async execute({user, password, email}: UserType) {

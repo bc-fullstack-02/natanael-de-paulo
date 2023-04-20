@@ -15,8 +15,8 @@ class LikeAndUnlikePostController {
 
 		if(!post?.likes.includes(profile._id as Types.ObjectId)) {
 			const postLiked = await likePostService.like(post._id, profile);
-			await req.publish('comment-like', [post?.profile], postLiked);
-			return res.json(postLiked);
+			await req.publish('like-unlike_pub', [post?.profile], postLiked);
+			return res.status(200).json(postLiked);
 		}
 
 		const postUnliked = await likePostService.unlike(post._id, profile);

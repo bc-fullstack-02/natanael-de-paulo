@@ -10,7 +10,7 @@ class CreateUserController {
 		const user = await createUserService.execute(req.body);
 		const profile = await createProfileService.execute(user, req.body.profile);
 		const userUpdated = await insertProfileInUser.execute({ user, profile });
-		return res.status(201).json(userUpdated);
+		res.status(201).json(userUpdated);
 	}
 }
 

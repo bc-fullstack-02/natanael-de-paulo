@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UserByIdType, UserType } from '../../shared/types/UserTypes';
 import { userRepository } from '../../repository/UserRepository';
 
