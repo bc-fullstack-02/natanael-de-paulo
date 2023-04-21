@@ -1,11 +1,12 @@
 import jwtDecode from 'jwt-decode';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
-import { json, useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../services/api';
 import { AuthHeader } from '../services/authHeader';
+import { LoginUserProps } from '../services/types';
 
 interface AuthContextData  {
-  singIn: (user: string, password: string) => Promise<void>;
+  singIn: ({user, password}: LoginUserProps) => Promise<void>;
   signOut:  () => void;
   isAuthenticated: boolean;
   loading: boolean
@@ -46,7 +47,9 @@ export function AuthProvider({children} : AuthProviderProps ){
   }, [])
 
 
-  const singIn = async (user: string, password: string) => {
+  const singIn = async ({user, password}: LoginUserProps ) => {
+    console.log(user, password);
+    
 		try {
 			const { data } = await api.post('/security/login', {
 				user,
@@ -54,7 +57,6 @@ export function AuthProvider({children} : AuthProviderProps ){
 			})
 
 			const decodedToken = jwtDecode(data.token) as Token
-
 
       const userData = {
         user_id: decodedToken.sub, 

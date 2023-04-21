@@ -1,28 +1,32 @@
-export interface PostProps{
+export type PostProps = {
   _id: string;
   title: string;
   description: string;
   profile: ProfileProps;
   image: boolean;
   imagePath: string;
-  comments: [];
-  likes: [];
+  comments: [ProfileProps | any];
+  likes: [ProfileProps | any];
   createdAt: string;
   updatedAt: string;
 }
 
-export interface ProfileProps{
+export type LoginUserProps = Pick<UserProps, "password" | "user">
+
+export type ProfileProps = {
   _id: string;
   name: string;
   user: string;
-  email: string;
-  following: [];
-  followers: [];
+  following: [ProfileProps | any];
+  followers: [ProfileProps | any];
   image: boolean;
   imageUrl: string;
 }
 
-export interface UserProps {
+export type UserProps = {
   _id: string;
+  user: string;
+  password: string;
+  email: string;
   profile: ProfileProps
 }

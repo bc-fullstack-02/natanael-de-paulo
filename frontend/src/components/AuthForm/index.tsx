@@ -5,12 +5,13 @@ import { Text } from '../Text';
 import { Button } from '../Button';
 import { Heading } from '../Heading';
 import Logo from '../../assets/parrotLogo.svg';
+import { LoginUserProps, ProfileProps, UserProps } from '../../services/types';
 
 interface FormProps{
 	className?: string;
 	formTitle: string;
 	submitFormButtonText: string;
-	submitFormButtonAction: (...params : string[]) => Promise<void>
+	submitFormButtonAction: (data:  Omit<UserProps, "_id"> | LoginUserProps) => Promise<void>
 	linkDescription: string[];
 	routeName: string;
 	children?: ReactNode;
@@ -21,6 +22,7 @@ interface FormElements extends HTMLFormControlsCollection{
 	name: HTMLInputElement;
 	user: HTMLInputElement;
 	password: HTMLInputElement;
+	email: HTMLInputElement;
 }
 
 interface FormElement extends HTMLFormElement{
@@ -31,19 +33,38 @@ interface FormElement extends HTMLFormElement{
 export function AuthForm( {className, formTitle, submitFormButtonText, linkDescription, routeName, submitFormButtonAction, children, typeSubmit} : FormProps){
 
 	const handleSubmit = (event: FormEvent<FormElement>) => {
-		
 		event.preventDefault()
 		const form = event.currentTarget
-		const { name, user, password } = form.elements
+		console.log(form.elements);
 		
+		const { name, user, password, email } = form.elements
 		
-		if(typeSubmit == "cadastro") submitFormButtonAction(name.value, user.value, password.value)
-		if(typeSubmit == "login") submitFormButtonAction(user.value, password.value)
-	}
+		if(typeSubmit == "login") {
 
+			const loginData = {
+				user: user.value,
+				password: password.value
+			} as LoginUserProps
+
+			submitFormButtonAction(loginData)
+		}
+		if(typeSubmit == "cadastro") {
+
+			const createUserData: Omit<UserProps, "_id"> = { 
+				user: user.value, 
+				password: password.value, 
+				email: email.value,
+				profile: {
+					name: name.value,
+				} as ProfileProps
+			}
+	
+			submitFormButtonAction(createUserData)
+		}
+	}
 	return(
 		<>
-			<section className="text-cyan-50 px-6 mx-auto flex flex-col justify-center items-center gap-y-2 w-full max-w-screen-xl sm:flex-row sm:justify-between sm:gap-4">
+			<section className="text-cyan-50 px-6 mx-auto flex flex-col justify-'center items-center gap-y-2 w-full max-w-screen-xl sm:flex-row sm:justify-between sm:gap-4">
 				<header className="flex flex-col justify-center items-center text-center sm:flex-1">
 					<img src={Logo} alt="Logo de papagaio do site sysmap Parrot" className='w-52 h-52 animate-rotate' />
 					<Heading asChild={true} size="lg" className="font-bold mt-4">

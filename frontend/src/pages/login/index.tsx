@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom'
-import { Text } from '../../components/Text';
-import { MdLockOutline, MdPersonOutline } from 'react-icons/md';
+import { useContextAuth } from '../../contexts/useAuth';
 import { AuthForm } from '../../components/AuthForm';
 import { WraperInput } from '../../components/AuthForm/WraperInput';
+import { MdLockOutline, MdPersonOutline } from 'react-icons/md';
+import { Text } from '../../components/Text';
 import { Input } from '../../components/AuthForm/Input';
-import { useContextAuth } from '../../contexts/useAuth';
 
 export function Login() {
 	const { singIn, isAuthenticated } = useContextAuth()
@@ -12,6 +12,8 @@ export function Login() {
 	if(isAuthenticated == true) {
     return <Navigate to='/home' replace />
 	}
+	console.log(singIn);
+	
 
 	return(
 		<AuthForm formTitle='Faça login e começe a usar!' submitFormButtonText='Entrar' linkDescription={['Não possui conta?', 'Crie uma agora']} routeName='/signup' submitFormButtonAction={singIn} typeSubmit="login">
